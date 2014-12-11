@@ -162,6 +162,12 @@ abstract class Tx_News_Domain_Repository_AbstractDemandedRepository
 			$constraints[] = $query->equals('deleted', 0);
 		}
 
+		// allow only content from current language or content for all languages
+		$constraints[] = $query->logicalOr(array(
+			$query->equals('sys_language_uid', $GLOBALS['TSFE']->sys_language_uid),
+			$query->equals('sys_language_uid', -1)
+		));
+
 		if (!empty($constraints)) {
 			$query->matching(
 				$query->logicalAnd($constraints)
