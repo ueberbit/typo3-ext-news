@@ -1,4 +1,4 @@
-{namespace n=Tx_News_ViewHelpers}
+{namespace n=GeorgRinger\News\ViewHelpers}
 
 <f:layout name="Detail.html" />
 
@@ -32,8 +32,8 @@
 				<p>
 					<!-- date -->
 					<span class="news-list-date">
-						<time datetime="{f:format.date(date:newsItem.datetime,format:'Y-m-d')}">
-							<n:format.date format="{f:translate(key:'dateFormat')}">{newsItem.datetime}</n:format.date>
+						<time datetime="{f:format.date(date:newsItem.datetime, format:'Y-m-d')}">
+							<f:format.date format="{f:translate(key:'dateFormat')}">{newsItem.datetime}</f:format.date>
 						</time>
 					</span>
 
@@ -105,7 +105,7 @@
 			<f:if condition="{settings.detail.disqusShortname}">
 				<n:social.disqus newsItem="{newsItem}"
 								 shortName="{settings.detail.disqusShortname}"
-								 link="{n:link(newsItem:newsItem,settings:settings,uriOnly:1,configuration:'{forceAbsoluteUrl:1}')}" />
+								 link="{n:link(newsItem:newsItem, settings:settings, uriOnly:1, configuration:'{forceAbsoluteUrl:1}')}" />
 			</f:if>
 
 			<!-- related things -->
@@ -120,8 +120,8 @@
 						<ul>
 							<f:for each="{newsItem.allRelatedSorted}" as="related">
 								<li>
-									<span class="news-related-news-date"><n:format.date format="{f:translate(key:'dateFormat')}">{related.datetime}</n:format.date></span>
-									<n:link newsItem="{related}" settings="{settings}">
+									<span class="news-related-news-date"><f:format.date format="{f:translate(key:'dateFormat')}">{related.datetime}</f:format.date></span>
+									<n:link newsItem="{related}" settings="{settings}" title="{related.title}">
 										{related.title}
 									</n:link>
 								</li>
@@ -183,7 +183,7 @@
 										</n:format.fileDownload>
 									</span>
 									<span class="news-related-files-size">
-										<n:format.fileSize file="{relatedFile.originalResource.publicUrl}" fileSize="{relatedFile.originalResource.size}" format="{settings.relatedFiles.fileSizeLabels}" />
+										{relatedFile.originalResource.size -> f:format.bytes()}
 									</span>
 								</li>
 							</f:for>

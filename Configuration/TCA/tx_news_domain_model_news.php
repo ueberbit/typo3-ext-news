@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 $ll = 'LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:';
 
 // Extension manager configuration
-$configuration = \Tx_News_Utility_EmConfiguration::getSettings();
+$configuration = \GeorgRinger\News\Utility\EmConfiguration::getSettings();
 
 $teaserRteConfiguration = $configuration->getRteForTeaser() ? ';;;richtext::rte_transform[flag=rte_disabled|mode=ts_css]' : '';
 
@@ -167,6 +167,7 @@ $tx_news_domain_model_news = array(
 		),
 		'title' => array(
 			'exclude' => 0,
+			'l10n_mode' => 'prefixLangTitle',
 			'label' => 'LLL:EXT:cms/locallang_ttc.xlf:header_formlabel',
 			'config' => array(
 				'type' => 'input',
@@ -278,7 +279,7 @@ $tx_news_domain_model_news = array(
 				'type' => 'select',
 				'renderMode' => 'tree',
 				'treeConfig' => array(
-					'dataProvider' => 'Tx_News_TreeProvider_DatabaseTreeDataProvider',
+					'dataProvider' => 'GeorgRinger\\News\\TreeProvider\\DatabaseTreeDataProvider',
 					'parentField' => 'parent',
 					'appearance' => array(
 						'showHeader' => TRUE,
@@ -514,7 +515,8 @@ $tx_news_domain_model_news = array(
 				'type' => 'inline',
 				'allowed' => 'tt_content',
 				'foreign_table' => 'tt_content',
-				'MM' => 'tx_news_domain_model_news_ttcontent_mm',
+				'foreign_sortby' => 'sorting',
+				'foreign_field' => 'tx_news_related_news',
 				'minitems' => 0,
 				'maxitems' => 99,
 				'appearance' => array(
@@ -553,7 +555,7 @@ $tx_news_domain_model_news = array(
 					'suggest' => array(
 						'type' => 'suggest',
 						'default' => array(
-							'receiverClass' => 'Tx_News_Hooks_SuggestReceiver'
+							'receiverClass' => 'GeorgRinger\\News\\Hooks\\SuggestReceiver'
 						),
 					),
 					'list' => array(

@@ -193,10 +193,25 @@ Don't forget to configure the RSS feed properly as the sample template won't ful
     		title = Dummy Title
     		description =
     		link = http://example.com
-    		language = en_GB
+    		language = en-gb
     		copyright = TYPO3 News
     		category =
     		generator = TYPO3 EXT:news
     	}
     }
 
+
+Troubleshooting
+***************
+
+Entity 'nbsp' not defined
+"""""""""""""""""""""""""
+
+If you are getting this error, the easiest thing is to replace the character by using TypoScript: ::
+
+pageNewsRSS.10.stdWrap.replacement {
+	10  {
+		search = &nbsp;
+		replace = &#160;
+	}
+}

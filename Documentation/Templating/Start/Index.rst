@@ -43,14 +43,17 @@ The TypoScript Setup syntax looks like this: ::
 
 		plugin.tx_news {
 			view {
+				templateRootPaths >
 				templateRootPaths {
 					0 = EXT:news/Resources/Private/Templates/
 					1 = fileadmin/templates/ext/news/Templates/
 				}
+				partialRootPaths >
 				partialRootPaths {
 					0 = EXT:news/Resources/Private/Partials/
 					1 = fileadmin/templates/ext/news/Partials/
 				}
+				layoutRootPaths >
 				layoutRootPaths {
 					0 = EXT:news/Resources/Private/Layouts/
 					1 = fileadmin/templates/ext/news/Layouts/
@@ -121,7 +124,7 @@ holds the information of the list template.
 
 The content of the file is ::
 
-   {namespace n=Tx_News_ViewHelpers}
+   {namespace n=GeorgRinger\News\ViewHelpers}
 
    <n:includeFile path="EXT:news/Resources/Public/Css/news-basic.css" />
    <n:includeFile path="EXT:news/Resources/Public/Css/news-advanced.css" />
