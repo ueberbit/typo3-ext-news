@@ -405,7 +405,7 @@ class NewsImportService extends AbstractImportService {
 		foreach ($importData as $importItem) {
 
 			// Store language overlay in post persist queue
-			if ((int)$importItem['sys_language_uid'] > 0 && $importItem['l10n_parent'] > 0) {
+			if ((int)$importItem['sys_language_uid'] > 0 && (string)$importItem['l10n_parent'] !== '0') {
 				$this->postPersistQueue[$importItem['import_id']] = array(
 					'action' => self::ACTION_IMPORT_L10N_OVERLAY,
 					'category' => NULL,
@@ -467,7 +467,9 @@ class NewsImportService extends AbstractImportService {
 
 		if (isset($mediaItems) && $mediaItems->count() !== 0) {
 			foreach ($mediaItems as $mediaItem) {
-				if ($mediaItem->getImage() == basename($mediaFile) &&
+				$pathInfoItem = pathinfo($mediaItem->getImage());
+				$pathInfoMediaFile = pathInfo($mediaFile);
+				if (GeneralUtility::isFirstPartOfStr($pathInfoItem['filename'], $pathInfoMediaFile['filename'])  &&
 					$this->filesAreEqual(PATH_site . $mediaFile, PATH_site . self::UPLOAD_PATH . $mediaItem->getImage())) {
 					$result = $mediaItem;
 					break;
@@ -563,7 +565,7 @@ class NewsImportService extends AbstractImportService {
 		$result = FALSE;
 		$links = $news->getRelatedLinks();
 
-		if ($links->count() !== 0) {
+		if (!empty($links) && $links->count() !== 0) {
 			foreach ($links as $link) {
 				if ($link->getUri() === $uri) {
 					$result = $link;

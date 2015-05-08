@@ -1,24 +1,22 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 $boot = function($packageKey) {
 	// The following calls are targeted for BE but might be needed in FE editing
 
 	// CSH - context sensitive help
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tx_news_domain_model_news', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_news.xlf');
+			'tx_news_domain_model_news', 'EXT:news/Resources/Private/Language/locallang_csh_news.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tx_news_domain_model_media', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_media.xlf');
+			'tx_news_domain_model_media', 'EXT:news/Resources/Private/Language/locallang_csh_media.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tx_news_domain_model_file', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_file.xlf');
+			'tx_news_domain_model_file', 'EXT:news/Resources/Private/Language/locallang_csh_file.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tx_news_domain_model_link', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_link.xlf');
+			'tx_news_domain_model_link', 'EXT:news/Resources/Private/Language/locallang_csh_link.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tx_news_domain_model_tag', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_tag.xlf');
+			'tx_news_domain_model_tag', 'EXT:news/Resources/Private/Language/locallang_csh_tag.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-			'tt_content.pi_flexform.news_pi1.list', 'EXT:' . $packageKey . '/Resources/Private/Language/locallang_csh_flexforms.xlf');
+			'tt_content.pi_flexform.news_pi1.list', 'EXT:news/Resources/Private/Language/locallang_csh_flexforms.xlf');
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_news_domain_model_news');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_news_domain_model_media');
@@ -35,15 +33,7 @@ $boot = function($packageKey) {
 	unset($GLOBALS['ICON_TYPES']['news']);
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addTcaTypeIcon('pages', 'contains-news', '../typo3conf/ext/news/Resources/Public/Icons/folder.gif');
 
-	if (TYPO3_MODE == 'BE') {
-		$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($packageKey);
-		$pluginSignature = strtolower($extensionName) . '_pi1';
-
-		/***************
-		 * Wizard pi1
-		 */
-		$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'][$pluginSignature . '_wizicon'] =
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($packageKey) . 'Resources/Private/Php/class.' . $packageKey . '_wizicon.php';
+	if (TYPO3_MODE === 'BE') {
 
 		$addNewsToModuleSelection = TRUE;
 		foreach ($GLOBALS['TCA']['pages']['columns']['module']['config']['items'] as $item) {
@@ -108,7 +98,7 @@ $boot = function($packageKey) {
 		=========================================================================== */
 		if ($configuration->getShowImporter()) {
 			\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-				$packageKey,
+				'news',
 				'web',
 				'tx_news_m1',
 				'',
@@ -117,9 +107,9 @@ $boot = function($packageKey) {
 				),
 				array(
 					'access' => 'user,group',
-					'icon' => 'EXT:' . $packageKey . '/Resources/Public/Icons/' .
+					'icon' => 'EXT:news/Resources/Public/Icons/' .
 						(\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.0') ? 'module_import.png' : 'import_module.gif'),
-					'labels' => 'LLL:EXT:' . $packageKey . '/Resources/Private/Language/locallang_mod.xlf',
+					'labels' => 'LLL:EXT:news/Resources/Private/Language/locallang_mod.xlf',
 				)
 			);
 
@@ -141,7 +131,7 @@ $boot = function($packageKey) {
 		=========================================================================== */
 		if ($configuration->getShowAdministrationModule()) {
 			\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-				$packageKey,
+				'news',
 				'web',
 				'tx_news_m2',
 				'',
@@ -150,9 +140,9 @@ $boot = function($packageKey) {
 				),
 				array(
 					'access' => 'user,group',
-					'icon' => 'EXT:' . $packageKey . '/Resources/Public/Icons/' .
+					'icon' => 'EXT:news/Resources/Public/Icons/' .
 						(\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.0') ? 'module_administration.png' : 'folder.gif'),
-					'labels' => 'LLL:EXT:' . $packageKey . '/Resources/Private/Language/locallang_modadministration.xlf',
+					'labels' => 'LLL:EXT:news/Resources/Private/Language/locallang_modadministration.xlf',
 				)
 			);
 		}

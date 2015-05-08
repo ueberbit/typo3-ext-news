@@ -29,7 +29,6 @@
 			</div>
 		</div>
 	</f:if>
-	<f:flashMessages class="tx-extbase-flash-message" />
 
 	<f:form name="demand" object="{demand}" method="get" >
 		<input type="hidden" name="M" value="web_NewsTxNewsM2">
@@ -41,6 +40,13 @@
 		</h2>
 		<div class="settings">
 			<div class="form">
+				<div class="field">
+					<label for="searchWord">
+						<f:translate key="LLL:EXT:news/Resources/Private/Language/locallang_be.xlf:module.searchWord" />
+					</label>
+					<f:form.textfield property="searchWord" id="searchWord" />
+					<div class="clear"></div>
+				</div>
 				<div class="field">
 					<label for="recursive">
 						<f:translate key="LLL:EXT:news/Resources/Private/Language/locallang_be.xlf:module.recursive" />
