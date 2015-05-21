@@ -3,12 +3,6 @@
 /**
  * @deprecated
  */
-class Tx_News_Cache_ClassCacheBuilder extends GeorgRinger\News\Cache\ClassCacheBuilder {}
-
-
-/**
- * @deprecated
- */
 class Tx_News_Controller_AdministrationController extends GeorgRinger\News\Controller\AdministrationController {}
 
 
@@ -345,18 +339,6 @@ class Tx_News_Service_AccessControlService extends GeorgRinger\News\Service\Acce
 /**
  * @deprecated
  */
-class Tx_News_Service_Import_T3BlogNewsDataProviderService extends GeorgRinger\News\Service\Import\T3BlogNewsDataProviderService {}
-
-
-/**
- * @deprecated
- */
-class Tx_News_Service_Import_T3BlogCategoryDataProviderService extends GeorgRinger\News\Service\Import\T3BlogCategoryDataProviderService {}
-
-
-/**
- * @deprecated
- */
 interface Tx_News_Service_Import_DataProviderServiceInterface extends GeorgRinger\News\Service\Import\DataProviderServiceInterface {}
 
 /**
@@ -422,18 +404,6 @@ class Tx_News_MediaRenderer_Audio_Mp3 extends GeorgRinger\News\MediaRenderer\Aud
 /**
  * @deprecated
  */
-class Tx_News_Jobs_T3BlogNewsImportJob extends GeorgRinger\News\Jobs\T3BlogNewsImportJob {}
-
-
-/**
- * @deprecated
- */
-class Tx_News_Jobs_T3BlogCategoryImportJob extends GeorgRinger\News\Jobs\T3BlogCategoryImportJob {}
-
-
-/**
- * @deprecated
- */
 interface Tx_News_Jobs_ImportJobInterface extends GeorgRinger\News\Jobs\ImportJobInterface {}
 
 
@@ -446,19 +416,19 @@ class Tx_News_Jobs_AbstractImportJob extends GeorgRinger\News\Jobs\AbstractImpor
 /**
  * @deprecated
  */
-class Tx_News_Hooks_Tcemain extends GeorgRinger\News\Hooks\Tcemain {}
+class Tx_News_Hooks_Tcemain extends GeorgRinger\News\Hooks\DataHandler {}
 
 
 /**
  * @deprecated
  */
-class Tx_News_Hooks_Tceforms extends GeorgRinger\News\Hooks\Tceforms {}
+class Tx_News_Hooks_Tceforms extends GeorgRinger\News\Hooks\FormEngine {}
 
 
 /**
  * @deprecated
  */
-class Tx_News_Hooks_T3libBefunc extends GeorgRinger\News\Hooks\T3libBefunc {}
+class Tx_News_Hooks_T3libBefunc extends GeorgRinger\News\Hooks\BackendUtility {}
 
 
 /**
