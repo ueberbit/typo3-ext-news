@@ -17,13 +17,13 @@ namespace GeorgRinger\News\Hooks;
 use GeorgRinger\News\Domain\Model\Media;
 use GeorgRinger\News\Service\CategoryService;
 use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Userfunc to get alternative label
  *
- * @author	Georg Ringer <typo3@ringerge.org>
  * @package	TYPO3
  * @subpackage	tx_news
  */
@@ -72,7 +72,7 @@ class Labels {
 					$params['row']['image'] = $this->splitFileName($params['row']['image']);
 					try {
 						$additionalHtmlContent = '<br />' . BackendUtilityCore::thumbCode($params['row'], 'tx_news_domain_model_media', 'image', $GLOBALS['BACK_PATH'], '', NULL, 0, '', '', FALSE);
-					} catch(\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $exception) {
+					} catch(FolderDoesNotExistException $exception) {
 						$additionalHtmlContent = '<br />' . htmlspecialchars($params['row']['image']);
 					}
 				}

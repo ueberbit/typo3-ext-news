@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package TYPO3
  * @subpackage tx_news
- * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
  */
 class NewsImportService extends AbstractImportService {
 
@@ -152,6 +151,7 @@ class NewsImportService extends AbstractImportService {
 		$news->setTstamp($importItem['tstamp']);
 		$news->setCrdate($importItem['crdate']);
 		$news->setSysLanguageUid($importItem['sys_language_uid']);
+		$news->setSorting((int)$importItem['sorting']);
 
 		$news->setTitle($importItem['title']);
 		$news->setTeaser($importItem['teaser']);
@@ -192,6 +192,8 @@ class NewsImportService extends AbstractImportService {
 
 				if ($category) {
 					$news->addCategory($category);
+				} else {
+					$this->logger->warning(sprintf('Category with ID "%s" was not found', $categoryUid));
 				}
 			}
 		}

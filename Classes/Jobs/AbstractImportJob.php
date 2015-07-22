@@ -20,9 +20,9 @@ namespace GeorgRinger\News\Jobs;
  *
  * @package TYPO3
  * @subpackage tx_news
- * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
  */
 abstract class AbstractImportJob implements ImportJobInterface {
+
 	/**
 	 * @var \GeorgRinger\News\Service\Import\DataProviderServiceInterface
 	 */

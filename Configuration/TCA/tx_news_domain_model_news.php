@@ -13,6 +13,7 @@ $teaserRteConfiguration = $configuration->getRteForTeaser() ? ';;;richtext::rte_
 $tx_news_domain_model_news = array(
 	'ctrl' => array(
 		'title' => $ll . 'tx_news_domain_model_news',
+		'descriptionColumn' => 'tag',
 		'label' => 'title',
 		'prependAtCopy' => $configuration->getPrependAtCopy() ? 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy' : '',
 		'hideAtCopy' => TRUE,
@@ -109,6 +110,12 @@ $tx_news_domain_model_news = array(
 		),
 		'tstamp' => array(
 			'label' => 'tstamp',
+			'config' => array(
+				'type' => 'passthrough',
+			)
+		),
+		'sorting' => array(
+			'label' => 'sorting',
 			'config' => array(
 				'type' => 'passthrough',
 			)
@@ -297,7 +304,7 @@ $tx_news_domain_model_news = array(
 				'size' => 10,
 				'autoSizeMax' => 20,
 				'minitems' => 0,
-				'maxitems' => 20,
+				'maxitems' => 99,
 			)
 		),
 		'related' => array(
@@ -317,6 +324,9 @@ $tx_news_domain_model_news = array(
 				'wizards' => array(
 					'suggest' => array(
 						'type' => 'suggest',
+						'default' => array(
+							'searchWholePhrase' => TRUE
+						)
 					),
 				),
 			)
@@ -546,14 +556,15 @@ $tx_news_domain_model_news = array(
 				'size' => 10,
 				'autoSizeMax' => 20,
 				'minitems' => 0,
-				'maxitems' => 20,
+				'maxitems' => 99,
 				'wizards' => array(
 					'_PADDING' => 2,
 					'_VERTICAL' => 1,
 					'suggest' => array(
 						'type' => 'suggest',
 						'default' => array(
-							'receiverClass' => 'GeorgRinger\\News\\Hooks\\SuggestReceiver'
+							'searchWholePhrase' => TRUE,
+							'receiverClass' => 'GeorgRinger\\News\\Hooks\\SuggestReceiver' . (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.3') ? '7' : '')
 						),
 					),
 					'list' => array(
@@ -688,6 +699,10 @@ $tx_news_domain_model_news = array(
 		),
 	)
 );
+
+if (\TYPO3\CMS\Core\Utility\GeneralUtility::compat_version('7.3')) {
+	unset($tx_news_domain_model_news['columns']['rte_disabled']);
+}
 
 // category restriction based on settings in extension manager
 $categoryRestrictionSetting = $configuration->getCategoryRestriction();
