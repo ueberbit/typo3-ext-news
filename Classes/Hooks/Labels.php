@@ -2,7 +2,7 @@
 
 namespace GeorgRinger\News\Hooks;
 
-	/**
+/**
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -24,165 +24,177 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Userfunc to get alternative label
  *
- * @package	TYPO3
- * @subpackage	tx_news
+ * @package    TYPO3
+ * @subpackage    tx_news
  */
-class Labels {
+class Labels
+{
 
-	/**
-	 * Generate additional label for category records
-	 * including the title of the parent category
-	 *
-	 * @param array $params
-	 * @return void
-	 */
-	public function getUserLabelCategory(array &$params) {
-			// In list view: show normal label
-		$listView = strpos(GeneralUtility::getIndpEnv('REQUEST_URI'), 'typo3/sysext/list/mod1/db_list.php')
-					||  strpos(GeneralUtility::getIndpEnv('REQUEST_URI'), 'typo3/mod.php?&M=web_list')
-					||  strpos(GeneralUtility::getIndpEnv('REQUEST_URI'), 'typo3/mod.php?M=web_list');
+    /**
+     * Generate additional label for category records
+     * including the title of the parent category
+     *
+     * @param array $params
+     * @return void
+     */
+    public function getUserLabelCategory(array &$params)
+    {
+        $showTranslationInformation = false;
 
-			// No overlay if language of category is not base or no language yet selected
-		if ($listView || !is_array($params['row'])) {
-			$params['title'] = $params['row']['title'];
-		} else {
-			$params['title'] = CategoryService::translateCategoryRecord($params['row']['title'], $params['row']);
-		}
-	}
+        $getVars = GeneralUtility::_GET();
+        if (isset($getVars['route']) && $getVars['route'] === '/record/edit'
+            && isset($getVars['edit']) && is_array($getVars['edit'])
+            && (isset($getVars['edit']['tt_content']) || isset($getVars['edit']['tx_news_domain_model_news']) || isset($getVars['edit']['sys_category']))
+        ) {
+            $showTranslationInformation = true;
+        }
 
-	/**
-	 * Render different label for media elements
-	 *
-	 * @param array $params configuration
-	 * @return void
-	 */
-	public function getUserLabelMedia(array &$params) {
-		$ll = 'LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:';
-		$typeInfo = $additionalHtmlContent = '';
+        if ($showTranslationInformation && is_array($params['row'])) {
+            $params['title'] = CategoryService::translateCategoryRecord($params['row']['title'], $params['row']);
+        } else {
+            $params['title'] = $params['row']['title'];
+        }
+    }
 
-		$type = $GLOBALS['LANG']->sL($ll . 'tx_news_domain_model_media.type.I.' . $params['row']['type']);
+    /**
+     * Render different label for media elements
+     *
+     * @param array $params configuration
+     * @return void
+     */
+    public function getUserLabelMedia(array &$params)
+    {
+        $ll = 'LLL:EXT:news/Resources/Private/Language/locallang_db.xlf:';
+        $typeInfo = $additionalHtmlContent = '';
 
-			// Add additional info based on type
-		switch ((int)$params['row']['type']) {
-			// Image
-			case Media::MEDIA_TYPE_IMAGE:
-				$typeInfo .= $this->getTitleFromFields('title,alt,caption,image', $params['row']);
+        $type = $GLOBALS['LANG']->sL($ll . 'tx_news_domain_model_media.type.I.' . $params['row']['type']);
 
-				if (!empty($params['row']['image'])) {
-					$params['row']['image'] = $this->splitFileName($params['row']['image']);
-					try {
-						$additionalHtmlContent = '<br />' . BackendUtilityCore::thumbCode($params['row'], 'tx_news_domain_model_media', 'image', $GLOBALS['BACK_PATH'], '', NULL, 0, '', '', FALSE);
-					} catch(FolderDoesNotExistException $exception) {
-						$additionalHtmlContent = '<br />' . htmlspecialchars($params['row']['image']);
-					}
-				}
-				break;
-				// Audio & Video
-			case Media::MEDIA_TYPE_MULTIMEDIA:
-				$typeInfo .= $this->getTitleFromFields('caption,multimedia', $params['row']);
-				break;
-				// HTML
-			case Media::MEDIA_TYPE_HTML:
-					// Don't show html value as this could get a XSS
-				$typeInfo .= $params['row']['caption'];
-				break;
-			default:
-				$typeInfo .= $params['row']['caption'];
-		}
+        // Add additional info based on type
+        switch ((int)$params['row']['type']) {
+            // Image
+            case Media::MEDIA_TYPE_IMAGE:
+                $typeInfo .= $this->getTitleFromFields('title,alt,caption,image', $params['row']);
 
-		$title = (!empty($typeInfo)) ? $type . ': ' . $typeInfo : $type;
-		$title = htmlspecialchars($title) . $additionalHtmlContent;
+                if (!empty($params['row']['image'])) {
+                    $params['row']['image'] = $this->splitFileName($params['row']['image']);
+                    try {
+                        $additionalHtmlContent = '<br />' . BackendUtilityCore::thumbCode($params['row'],
+                                'tx_news_domain_model_media', 'image', $GLOBALS['BACK_PATH'], '', null, 0, '', '',
+                                false);
+                    } catch (FolderDoesNotExistException $exception) {
+                        $additionalHtmlContent = '<br />' . htmlspecialchars($params['row']['image']);
+                    }
+                }
+                break;
+            // Audio & Video
+            case Media::MEDIA_TYPE_MULTIMEDIA:
+                $typeInfo .= $this->getTitleFromFields('caption,multimedia', $params['row']);
+                break;
+            // HTML
+            case Media::MEDIA_TYPE_HTML:
+                // Don't show html value as this could get a XSS
+                $typeInfo .= $params['row']['caption'];
+                break;
+            default:
+                $typeInfo .= $params['row']['caption'];
+        }
 
-			// Hook to modify the label, especially useful when using custom media relations
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'])) {
-			$params = array('params' => $params, 'title' => $title);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'] as $reference) {
-				$title = GeneralUtility::callUserFunction($reference, $params, $this);
-			}
-		}
+        $title = (!empty($typeInfo)) ? $type . ': ' . $typeInfo : $type;
+        $title = htmlspecialchars($title) . $additionalHtmlContent;
 
-			// Preview
-		if ($params['row']['showinpreview']) {
-			$label = htmlspecialchars($GLOBALS['LANG']->sL($ll . 'tx_news_domain_model_media.show'));
-			$icon = '../' . ExtensionManagementUtility::siteRelPath('news') . 'Resources/Public/Icons/preview.gif';
-			$title .= ' <img title="' . $label . '" src="' . $icon . '" />';
-		}
+        // Hook to modify the label, especially useful when using custom media relations
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'])) {
+            $params = array('params' => $params, 'title' => $title);
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'] as $reference) {
+                $title = GeneralUtility::callUserFunction($reference, $params, $this);
+            }
+        }
 
-			// Show the [No title] if empty
-		if (empty($title)) {
-			$title =  BackendUtilityCore::getNoRecordTitle(TRUE);
-		}
+        // Preview
+        if ($params['row']['showinpreview']) {
+            $label = htmlspecialchars($GLOBALS['LANG']->sL($ll . 'tx_news_domain_model_media.show'));
+            $icon = '../' . ExtensionManagementUtility::siteRelPath('news') . 'Resources/Public/Icons/preview.gif';
+            $title .= ' <img title="' . $label . '" src="' . $icon . '" />';
+        }
 
-		$params['title'] = $title;
-	}
+        // Show the [No title] if empty
+        if (empty($title)) {
+            $title = BackendUtilityCore::getNoRecordTitle(true);
+        }
 
-	/**
-	 * Get news categories based on the news id
-	 *
-	 * @param integer $newsUid
-	 * @param integer $catMm
-	 * @return string list of categories
-	 */
-	protected function getCategories($newsUid, $catMm) {
-		if ($catMm == 0) {
-			return '';
-		}
+        $params['title'] = $title;
+    }
 
-		$catTitles = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
-			'sys_category.title as title',
-			'tx_news_domain_model_news',
-			'sys_category_mm',
-			'sys_category',
-			' AND tx_news_domain_model_news.uid=' . (int)$newsUid
-		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$catTitles[] = $row['title'];
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+    /**
+     * Get news categories based on the news id
+     *
+     * @param integer $newsUid
+     * @param integer $catMm
+     * @return string list of categories
+     */
+    protected function getCategories($newsUid, $catMm)
+    {
+        if ($catMm == 0) {
+            return '';
+        }
 
-		return implode(', ', $catTitles);
-	}
+        $catTitles = array();
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
+            'sys_category.title as title',
+            'tx_news_domain_model_news',
+            'sys_category_mm',
+            'sys_category',
+            ' AND tx_news_domain_model_news.uid=' . (int)$newsUid
+        );
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $catTitles[] = $row['title'];
+        }
+        $GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-	/**
-	 * Get the first filled field of a record
-	 *
-	 * @param string $fieldList comma separated list of fields
-	 * @param array $record record
-	 * @return string 1st used field
-	 */
-	protected function getTitleFromFields($fieldList, $record = array()) {
-		$title = '';
-		$fields = GeneralUtility::trimExplode(',', $fieldList, TRUE);
+        return implode(', ', $catTitles);
+    }
 
-		if (!is_array($record) || empty($record)) {
-			return $title;
-		}
+    /**
+     * Get the first filled field of a record
+     *
+     * @param string $fieldList comma separated list of fields
+     * @param array $record record
+     * @return string 1st used field
+     */
+    protected function getTitleFromFields($fieldList, $record = array())
+    {
+        $title = '';
+        $fields = GeneralUtility::trimExplode(',', $fieldList, true);
 
-		foreach ($fields as $fieldName) {
-			if (empty($title) && isset($record[$fieldName]) && !empty($record[$fieldName])) {
-				$title = $record[$fieldName];
-			}
-		}
+        if (!is_array($record) || empty($record)) {
+            return $title;
+        }
 
-		$title = $this->splitFileName($title);
+        foreach ($fields as $fieldName) {
+            if (empty($title) && isset($record[$fieldName]) && !empty($record[$fieldName])) {
+                $title = $record[$fieldName];
+            }
+        }
 
-		return $title;
-	}
+        $title = $this->splitFileName($title);
 
-	/**
-	 * Split the filename
-	 *
-	 * @param string $title
-	 * @return string
-	 */
-	protected function splitFileName($title) {
-		$split = explode('|', $title);
-		if (count($split) === 2 && $split[0] === $split[1]) {
-			$title = $split[0];
-		}
+        return $title;
+    }
 
-		return $title;
-	}
+    /**
+     * Split the filename
+     *
+     * @param string $title
+     * @return string
+     */
+    protected function splitFileName($title)
+    {
+        $split = explode('|', $title);
+        if (count($split) === 2 && $split[0] === $split[1]) {
+            $title = $split[0];
+        }
+
+        return $title;
+    }
 
 }

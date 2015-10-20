@@ -2,7 +2,7 @@
 
 namespace GeorgRinger\News\ViewHelpers;
 
-	/**
+/**
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -14,6 +14,9 @@ namespace GeorgRinger\News\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to render data in <head> section of website
@@ -21,10 +24,10 @@ namespace GeorgRinger\News\ViewHelpers;
  * # Example: Basic example
  * <code>
  * <n:headerData>
- * 		<link rel="alternate"
- * 			type="application/rss+xml"
- * 			title="RSS 2.0"
- * 			href="<f:uri.page additionalParams="{type:9818}"/>" />
+ *        <link rel="alternate"
+ *            type="application/rss+xml"
+ *            title="RSS 2.0"
+ *            href="<f:uri.page additionalParams="{type:9818}"/>" />
  * </n:headerData>
  * </code>
  * <output>
@@ -32,14 +35,17 @@ namespace GeorgRinger\News\ViewHelpers;
  * </output>
  *
  */
-class HeaderDataViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class HeaderDataViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Renders HeaderData
-	 *
-	 * @return void
-	*/
-	public function render() {
-		$GLOBALS['TSFE']->getPageRenderer()->addHeaderData($this->renderChildren());
-	}
+    /**
+     * Renders HeaderData
+     *
+     * @return void
+     */
+    public function render()
+    {
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addHeaderData($this->renderChildren());
+    }
 }

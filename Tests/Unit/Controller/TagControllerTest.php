@@ -77,17 +77,18 @@ class TagControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$fixture = $this->getAccessibleMock(
 			'GeorgRinger\\News\\Controller\\TagController',
-			array('createDemandObjectFromSettings')
+			array('createDemandObjectFromSettings', 'emitActionSignal')
 		);
 		$fixture->_set('signalSlotDispatcher', $mockedSignalSlotDispatcher);
 
 		$fixture->injectTagRepository($this->tagRepository);
 		$fixture->injectConfigurationManager($configurationManager);
-		$fixture->setView($this->getMock('Tx_Fluid_View_TemplateView', array(), array(), '', FALSE));
+		$fixture->setView($this->getMock('TYPO3\CMS\Fluid\View\TemplateView', array(), array(), '', FALSE));
 		$fixture->_set('settings', $settings);
 
 		$fixture->expects($this->once())->method('createDemandObjectFromSettings')
 			->will($this->returnValue($demand));
+		$fixture->expects($this->once())->method('emitActionSignal')->will($this->returnValue(array()));
 
 		$this->tagRepository->expects($this->once())->method('findDemanded')
 			->with($demand);

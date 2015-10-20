@@ -2,7 +2,7 @@
 
 namespace GeorgRinger\News\ViewHelpers\Be\Buttons;
 
-	/**
+/**
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -15,7 +15,9 @@ namespace GeorgRinger\News\ViewHelpers\Be\Buttons;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * ViewHelper to show sprite icon for a record
@@ -31,23 +33,29 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  * @package TYPO3
  * @subpackage tx_news
  */
-class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class IconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * Render the sprite icon
-	 *
-	 * @param string $table table name
-	 * @param integer $uid uid of record
-	 * @param string $title title
-	 * @return string sprite icon
-	 */
-	public function render($table, $uid, $title) {
-		$icon = '';
-		$row = BackendUtility::getRecord($table, $uid);
-		if (is_array($row)) {
-			$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($title)));
-		}
+    /**
+     * Render the sprite icon
+     *
+     * @param string $table table name
+     * @param integer $uid uid of record
+     * @param string $title title
+     * @return string sprite icon
+     */
+    public function render($table, $uid, $title)
+    {
+        $icon = '';
+        $row = BackendUtility::getRecord($table, $uid);
+        if (is_array($row)) {
+            /** @var IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $icon = '<span title="' . htmlspecialchars($title) . '">'
+                . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
+                . '</span>';
+        }
 
-		return $icon;
-	}
+        return $icon;
+    }
 }
