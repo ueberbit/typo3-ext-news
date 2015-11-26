@@ -19,8 +19,6 @@ namespace GeorgRinger\News\ViewHelpers\Widget\Controller;
  * Paginate controller to create the pagination.
  * Extended version from fluid core
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
 {
@@ -28,13 +26,13 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     /**
      * @var array
      */
-    protected $configuration = array(
+    protected $configuration = [
         'itemsPerPage' => 10,
         'insertAbove' => false,
         'insertBelow' => true,
         'maximumNumberOfLinks' => 99,
         'templatePath' => ''
-    );
+    ];
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
@@ -42,7 +40,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     protected $objects;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $currentPage = 1;
 
@@ -52,18 +50,18 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     protected $templatePath = '';
 
     /**
-     * @var integer
+     * @var int
      */
     protected $numberOfPages = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maximumNumberOfLinks = 99;
 
-    /** @var integer */
+    /** @var int */
     protected $initialOffset = 0;
-    /** @var integer */
+    /** @var int */
     protected $initialLimit = 0;
 
     /**
@@ -101,7 +99,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     /**
      * Main action
      *
-     * @param integer $currentPage
+     * @param int $currentPage
      * @return void
      */
     public function indexAction($currentPage = 1)
@@ -141,9 +139,9 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             $modifiedObjects = $query->execute();
         }
 
-        $this->view->assign('contentArguments', array(
+        $this->view->assign('contentArguments', [
             $this->widgetConfiguration['as'] => $modifiedObjects
-        ));
+        ]);
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('pagination', $this->buildPagination());
 
@@ -160,11 +158,11 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
     protected function buildPagination()
     {
         $this->calculateDisplayRange();
-        $pages = array();
+        $pages = [];
         for ($i = $this->displayRangeStart; $i <= $this->displayRangeEnd; $i++) {
-            $pages[] = array('number' => $i, 'isCurrent' => $i === $this->currentPage);
+            $pages[] = ['number' => $i, 'isCurrent' => $i === $this->currentPage];
         }
-        $pagination = array(
+        $pagination = [
             'pages' => $pages,
             'current' => $this->currentPage,
             'numberOfPages' => $this->numberOfPages,
@@ -172,7 +170,7 @@ class PaginateController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetCont
             'displayRangeEnd' => $this->displayRangeEnd,
             'hasLessPages' => $this->displayRangeStart > 2,
             'hasMorePages' => $this->displayRangeEnd + 1 < $this->numberOfPages
-        );
+        ];
         if ($this->currentPage < $this->numberOfPages) {
             $pagination['nextPage'] = $this->currentPage + 1;
         }

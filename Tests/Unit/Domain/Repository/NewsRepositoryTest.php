@@ -20,8 +20,6 @@ use GeorgRinger\News\Domain\Model\Dto\Search;
 /**
  * Tests for domain repository newsRepository
  *
- * @package TYPO3
- * @subpackage tx_news
  *
  */
 class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
@@ -43,11 +41,11 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (version_compare(TYPO3_branch, '6.2', '>=')) {
 			$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 			$newsRepository = $this->getAccessibleMock(
-				'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array($objectManager)
+				'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [$objectManager]
 			);
 		} else {
 			$newsRepository = $this->getAccessibleMock(
-				'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy')
+				'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy']
 			);
 		}
 		$newsRepository->_call('createConstraintsFromDemand', $query, $demand);
@@ -59,7 +57,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getSearchConstraintsThrowsErrorIfNoSearchFieldIsGiven() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$search = new Search();
 		$search->setSubject('fo');
@@ -76,7 +74,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getSearchConstraintsThrowsErrorIfNoDateFieldForMaximumDateIsGiven() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$search = new Search();
 		$search->setMaximumDate('2014-04-01');
@@ -93,7 +91,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getSearchConstraintsThrowsErrorIfNoDateFieldForMinimumDateIsGiven() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$search = new Search();
 		$search->setMinimumDate('2014-04-01');
@@ -109,7 +107,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function emptyConstraintIsReturnedForEmptySearchDemand() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$demand = new NewsDemand();
 		$demand->setSearch(NULL);
@@ -122,7 +120,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constraintsAreReturnedForSearchSubject() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$search = new Search();
 		$search->setSubject('Lorem');
@@ -140,7 +138,7 @@ class NewsRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function constraintsAreReturnedForDateFields() {
 		$mockedQuery = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface');
-		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array('dummy'), array(), '', FALSE);
+		$mockedRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\NewsRepository', ['dummy'], [], '', FALSE);
 
 		$search = new Search();
 		$search->setMinimumDate('2014-01-01');

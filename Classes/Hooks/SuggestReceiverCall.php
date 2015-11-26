@@ -19,12 +19,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility as BackendUtilityCore;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-
 /**
  * Ajax response for the custom suggest receiver
  *
- * @package    TYPO3
- * @subpackage    tx_news
  */
 class SuggestReceiverCall
 {
@@ -43,7 +40,7 @@ class SuggestReceiverCall
      */
     public function createTag(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj)
     {
-        $request = GeneralUtility::_POST();
+        $request = GeneralUtility::_GET();
 
         try {
             // Check if a tag is submitted
@@ -61,7 +58,7 @@ class SuggestReceiverCall
 
             $ajaxObj->setContentFormat('javascript');
             $ajaxObj->setContent('');
-            $response = array(
+            $response = [
                 $newTagId,
                 $request['item'],
                 self::TAG,
@@ -69,7 +66,7 @@ class SuggestReceiverCall
                 'tags',
                 'data[tx_news_domain_model_news][' . $newsUid . '][tags]',
                 $newsUid
-            );
+            ];
             $ajaxObj->setJavascriptCallbackWrap(implode('-', $response));
         } catch (\Exception $e) {
             $errorMsg = $GLOBALS['LANG']->sL(self::LLPATH . $e->getMessage());
@@ -81,7 +78,7 @@ class SuggestReceiverCall
      * Get the uid of the tag, either bei inserting as new or get existing
      *
      * @param array $request ajax request
-     * @return integer
+     * @return int
      * @throws \Exception
      */
     protected function getTagUid(array $request)
@@ -107,18 +104,18 @@ class SuggestReceiverCall
         if (isset($record['uid'])) {
             $tagUid = $record['uid'];
         } else {
-            $tcemainData = array(
-                self::TAG => array(
-                    'NEW' => array(
+            $tcemainData = [
+                self::TAG => [
+                    'NEW' => [
                         'pid' => $pid,
                         'title' => $request['item']
-                    )
-                )
-            );
+                    ]
+                ]
+            ];
 
             /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start($tcemainData, array());
+            $tce->start($tcemainData, []);
             $tce->process_datamap();
 
             $tagUid = $tce->substNEWwithIDs['NEW'];
@@ -134,7 +131,7 @@ class SuggestReceiverCall
     /**
      * Get pid for tags from TsConfig
      *
-     * @param integer $newsUid uid of current news record
+     * @param int $newsUid uid of current news record
      * @return int
      */
     protected function getTagPidFromTsConfig($newsUid)

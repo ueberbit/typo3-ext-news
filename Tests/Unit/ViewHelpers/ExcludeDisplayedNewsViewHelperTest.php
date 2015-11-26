@@ -14,14 +14,12 @@ namespace GeorgRinger\News\Tests\Unit\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use GeorgRinger\News\ViewHelpers\ExcludeDisplayedNewsViewHelper;
 use GeorgRinger\News\Domain\Model\News;
+use GeorgRinger\News\ViewHelpers\ExcludeDisplayedNewsViewHelper;
 
 /**
  * Tests for ExcludeDisplayedNewsViewHelper
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class ExcludeDisplayedNewsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -38,21 +36,21 @@ class ExcludeDisplayedNewsViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestC
 		$newsItem1->_setProperty('uid', '123');
 
 		$viewHelper->render($newsItem1);
-		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], array('123' => '123'));
+		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], ['123' => '123']);
 
 		$newsItem1 = new News();
 		$newsItem1->_setProperty('uid', '123');
-		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], array('123' => '123'));
+		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], ['123' => '123']);
 
 		$newsItem2 = new News();
 		$newsItem2->_setProperty('uid', '12');
 		$viewHelper->render($newsItem2);
-		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], array('123' => '123', '12' => '12'));
+		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], ['123' => '123', '12' => '12']);
 
 		$newsItem3 = new News();
 		$newsItem3->_setProperty('uid', '12');
 		$newsItem3->_setProperty('_localizedUid', '456');
 		$viewHelper->render($newsItem3);
-		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], array('123' => '123', '12' => '12', '456' => '456'));
+		$this->assertEquals($GLOBALS['EXT']['news']['alreadyDisplayed'], ['123' => '123', '12' => '12', '456' => '456']);
 	}
 }

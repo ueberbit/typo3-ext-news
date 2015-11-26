@@ -14,7 +14,6 @@ namespace GeorgRinger\News\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use GeorgRinger\News\Domain\Model\DemandInterface;
 use GeorgRinger\News\Utility\Validation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,7 +34,7 @@ class TagRepository extends \GeorgRinger\News\Domain\Repository\AbstractDemanded
      */
     protected function createConstraintsFromDemand(QueryInterface $query, DemandInterface $demand)
     {
-        $constraints = array();
+        $constraints = [];
 
         // Storage page
         if ($demand->getStoragePage() != 0) {
@@ -67,7 +66,7 @@ class TagRepository extends \GeorgRinger\News\Domain\Repository\AbstractDemanded
      */
     protected function createOrderingsFromDemand(DemandInterface $demand)
     {
-        $orderings = array();
+        $orderings = [];
 
         if (Validation::isValidOrdering($demand->getOrder(), $demand->getOrderByAllowed())) {
             $orderList = GeneralUtility::trimExplode(',', $demand->getOrder(), true);

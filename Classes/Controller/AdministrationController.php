@@ -23,16 +23,14 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Administration controller
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class AdministrationController extends NewsController
 {
@@ -43,7 +41,7 @@ class AdministrationController extends NewsController
     /**
      * Page uid
      *
-     * @var integer
+     * @var int
      */
     protected $pageUid = 0;
 
@@ -52,7 +50,7 @@ class AdministrationController extends NewsController
      *
      * @var array
      */
-    protected $tsConfiguration = array();
+    protected $tsConfiguration = [];
 
     /**
      * @var \GeorgRinger\News\Domain\Repository\CategoryRepository
@@ -95,7 +93,6 @@ class AdministrationController extends NewsController
      */
     protected $defaultViewObjectName = BackendTemplateView::class;
 
-
     /**
      * Set up the doc header properly here
      *
@@ -137,7 +134,7 @@ class AdministrationController extends NewsController
         foreach ($actions as $action) {
             $item = $menu->makeMenuItem()
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:news/Resources/Private/Language/locallang_be.xlf:module.' . $action['label']))
-                ->setHref($uriBuilder->reset()->uriFor($action['action'], array(), 'Administration'))
+                ->setHref($uriBuilder->reset()->uriFor($action['action'], [], 'Administration'))
                 ->setActive($this->request->getControllerActionName() === $action['action']);
             $menu->addMenuItem($item);
         }
@@ -181,7 +178,7 @@ class AdministrationController extends NewsController
             ) {
                 $viewButton = $buttonBar->makeLinkButton()
                     ->setHref($uriBuilder->reset()->setRequest($this->request)->uriFor($tableConfiguration['action'],
-                        array(), 'Administration'))
+                        [], 'Administration'))
                     ->setTitle($this->getLanguageService()->sL('LLL:EXT:news/Resources/Private/Language/locallang_be.xlf:' . $tableConfiguration['label'],
                         true))
                     ->setIcon($this->iconFactory->getIconForRecord($tableConfiguration['table'], [], Icon::SIZE_SMALL));
@@ -229,19 +226,19 @@ class AdministrationController extends NewsController
         $demand->setActionAndClass(__METHOD__, __CLASS__);
 
         $categories = $this->categoryRepository->findParentCategoriesByPid($this->pageUid);
-        $idList = array();
+        $idList = [];
         foreach ($categories as $c) {
             $idList[] = $c->getUid();
         }
 
-        $assignedValues = array(
+        $assignedValues = [
             'moduleToken' => $this->getToken(true),
             'page' => $this->pageUid,
             'demand' => $demand,
             'news' => $this->newsRepository->findDemanded($demand, false),
             'categories' => $this->categoryRepository->findTree($idList),
             'dateformat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']
-        );
+        ];
 
         $assignedValues = $this->emitActionSignal('AdministrationController', self::SIGNAL_ADMINISTRATION_INDEX_ACTION,
             $assignedValues);
@@ -251,23 +248,23 @@ class AdministrationController extends NewsController
     /**
      * Shows a page tree including count of news + category records
      *
-     * @param integer $treeLevel
+     * @param int $treeLevel
      * @return void
      */
     public function newsPidListingAction($treeLevel = 2)
     {
         $tree = Page::pageTree($this->pageUid, $treeLevel);
 
-        $rawTree = array();
+        $rawTree = [];
         foreach ($tree->tree as $row) {
             $this->countRecordsOnPage($row);
             $rawTree[] = $row;
         }
 
-        $assignedValues = array(
+        $assignedValues = [
             'tree' => $rawTree,
             'treeLevel' => $treeLevel,
-        );
+        ];
 
         $assignedValues = $this->emitActionSignal('AdministrationController',
             self::SIGNAL_ADMINISTRATION_NEWSPIDLISTING_ACTION, $assignedValues);
@@ -374,10 +371,10 @@ class AdministrationController extends NewsController
             }
         }
         $returnUrl = 'index.php?M=web_NewsTxNewsM2&id=' . $this->pageUid . $this->getToken();
-        $url = BackendUtilityCore::getModuleUrl('record_edit', array(
+        $url = BackendUtilityCore::getModuleUrl('record_edit', [
             'edit[' . $table . '][' . $pid . ']' => 'new',
             'returnUrl' => $returnUrl
-        ));
+        ]);
         HttpUtility::redirect($url);
     }
 

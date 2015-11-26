@@ -17,8 +17,6 @@ namespace GeorgRinger\News\Controller;
 /**
  * Category controller
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class CategoryController extends NewsController
 {
@@ -28,7 +26,7 @@ class CategoryController extends NewsController
     /**
      * Page uid
      *
-     * @var integer
+     * @var int
      */
     protected $pageUid = 0;
 
@@ -70,11 +68,11 @@ class CategoryController extends NewsController
 
         $idList = explode(',', $this->settings['categories']);
 
-        $assignedValues = array(
+        $assignedValues = [
             'categories' => $this->categoryRepository->findTree($idList),
             'overwriteDemand' => $overwriteDemand,
             'demand' => $demand,
-        );
+        ];
 
         $assignedValues = $this->emitActionSignal('CategoryController', self::SIGNAL_CATEGORY_LIST_ACTION,
             $assignedValues);

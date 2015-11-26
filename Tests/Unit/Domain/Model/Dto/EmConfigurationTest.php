@@ -19,8 +19,6 @@ use GeorgRinger\News\Domain\Model\Dto\EmConfiguration;
 /**
  * Tests for domains model News
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -31,7 +29,7 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function settingsCanBeRead() {
-		$configuration = array(
+		$configuration = [
 			'removeListActionFromFlexforms' => '2',
 			'pageModuleFieldsNews' => 'test',
 			'pageModuleFieldsCategory' => 'test',
@@ -47,7 +45,7 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'rteForTeaser' => FALSE,
 			'storageUidImporter' => 1,
 			'resourceFolderImporter' => 'fo',
-		);
+		];
 
 		$configurationInstance = new EmConfiguration($configuration);
 
@@ -64,7 +62,7 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function defaultSettingsCanBeRead() {
-		$configuration = array(
+		$configuration = [
 			'removeListActionFromFlexforms' => '2',
 			'removeListActionFromFlexforms' => 2,
 			'pageModuleFieldsNews' => '',
@@ -81,9 +79,9 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'rteForTeaser' => FALSE,
 			'storageUidImporter' => 1,
 			'resourceFolderImporter' => '/news_import',
-		);
+		];
 
-		$configurationInstance = new EmConfiguration(array());
+		$configurationInstance = new EmConfiguration([]);
 
 		foreach ($configuration as $key => $value) {
 			$functionName = 'get' . ucwords($key);

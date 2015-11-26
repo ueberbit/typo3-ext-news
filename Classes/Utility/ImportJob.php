@@ -18,8 +18,6 @@ namespace GeorgRinger\News\Utility;
 /**
  * Utility class for import jobs
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class ImportJob
 {
@@ -27,7 +25,7 @@ class ImportJob
     /**
      * @var array
      */
-    protected static $registeredJobs = array();
+    protected static $registeredJobs = [];
 
     /**
      * Register an import job.
@@ -40,11 +38,11 @@ class ImportJob
      */
     public static function register($className, $title, $description)
     {
-        self::$registeredJobs[] = array(
+        self::$registeredJobs[] = [
             'className' => $className,
             'title' => $title,
             'description' => $description
-        );
+        ];
     }
 
     /**

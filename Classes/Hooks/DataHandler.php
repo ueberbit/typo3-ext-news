@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Hook into tcemain which is used to show preview of news item
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class DataHandler
 {
@@ -38,7 +36,7 @@ class DataHandler
     public function clearCachePostProc(array $params)
     {
         if (isset($params['table']) && $params['table'] === 'tx_news_domain_model_news') {
-            $cacheTagsToFlush = array();
+            $cacheTagsToFlush = [];
             if (isset($params['uid'])) {
                 $cacheTagsToFlush[] = 'tx_news_uid_' . $params['uid'];
             }
@@ -60,7 +58,7 @@ class DataHandler
      *
      * @param string $status status
      * @param string $table table name
-     * @param integer $recordUid id of the record
+     * @param int $recordUid id of the record
      * @param array $fields fieldArray
      * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject parent Object
      * @return void
@@ -77,40 +75,6 @@ class DataHandler
             /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
             $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_news_category');
             $cache->flush();
-        }
-
-        // Preview link
-        if ($table === 'tx_news_domain_model_news') {
-
-            // direct preview
-            if (!is_numeric($recordUid)) {
-                $recordUid = $parentObject->substNEWwithIDs[$recordUid];
-            }
-
-            if (isset($GLOBALS['_POST']['_savedokview_x']) && !$fields['type']) {
-                // If "savedokview" has been pressed and current article has "type" 0 (= normal news article)
-                $pagesTsConfig = BackendUtilityCore::getPagesTSconfig($GLOBALS['_POST']['popViewId']);
-                if ($pagesTsConfig['tx_news.']['singlePid']) {
-                    $record = BackendUtilityCore::getRecord('tx_news_domain_model_news', $recordUid);
-
-                    $parameters = array(
-                        'no_cache' => 1,
-                        'tx_news_pi1[controller]' => 'News',
-                        'tx_news_pi1[action]' => 'detail',
-                        'tx_news_pi1[news_preview]' => $record['uid'],
-                    );
-                    if ($record['sys_language_uid'] > 0) {
-                        if ($record['l10n_parent'] > 0) {
-                            $parameters['tx_news_pi1[news_preview]'] = $record['l10n_parent'];
-                        }
-                        $parameters['L'] = $record['sys_language_uid'];
-                    }
-
-                    $GLOBALS['_POST']['popViewId_addParams'] = GeneralUtility::implodeArrayForUrl('', $parameters, '',
-                        false, true);
-                    $GLOBALS['_POST']['popViewId'] = $pagesTsConfig['tx_news.']['singlePid'];
-                }
-            }
         }
     }
 
@@ -131,9 +95,9 @@ class DataHandler
                 if (!AccessControlService::userHasCategoryPermissionsForRecord($newsRecord)) {
                     $parentObject->log($table, $id, 2, 0, 1,
                         "processDatamap: Attempt to modify a record from table '%s' without permission. Reason: the record has one or more categories assigned that are not defined in your BE usergroup.",
-                        1, array($table));
+                        1, [$table]);
                     // unset fieldArray to prevent saving of the record
-                    $fieldArray = array();
+                    $fieldArray = [];
                 } else {
 
                     // If the category relation has been modified, no | is found anymore
@@ -169,8 +133,8 @@ class DataHandler
             $newsRecord = BackendUtilityCore::getRecord($table, $id);
             if (!AccessControlService::userHasCategoryPermissionsForRecord($newsRecord)) {
                 $parentObject->log($table, $id, 2, 0, 1,
-                    "processCmdmap: Attempt to " . $command . " a record from table '%s' without permission. Reason: the record has one or more categories assigned that are not defined in the BE usergroup.",
-                    1, array($table));
+                    'processCmdmap: Attempt to ' . $command . " a record from table '%s' without permission. Reason: the record has one or more categories assigned that are not defined in the BE usergroup.",
+                    1, [$table]);
                 // unset table to prevent saving
                 $table = '';
             }

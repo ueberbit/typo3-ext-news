@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 /**
  * Controller to import news records
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -37,7 +35,7 @@ class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function getAvailableJobs()
     {
-        $availableJobs = array();
+        $availableJobs = [];
         $registeredJobs = ImportJob::getRegisteredJobs();
 
         foreach ($registeredJobs as $registeredJob) {
@@ -57,11 +55,11 @@ class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function indexAction()
     {
-        $this->view->assignMultiple(array(
+        $this->view->assignMultiple([
                 'error' => $this->checkCorrectConfiguration(),
-                'availableJobs' => array_merge(array(0 => ''), $this->getAvailableJobs()),
+                'availableJobs' => array_merge([0 => ''], $this->getAvailableJobs()),
                 'moduleUrl' => BackendUtility::getModuleUrl($this->request->getPluginName())
-            )
+            ]
         );
     }
 

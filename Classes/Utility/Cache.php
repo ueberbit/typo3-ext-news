@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Cache Utility class
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class Cache
 {
@@ -29,7 +27,7 @@ class Cache
      * Stack for processed cObjs which has added news relevant cache tags.
      * @var array
      */
-    protected static $processedContentRecords = array();
+    protected static $processedContentRecords = [];
 
     /**
      * Marks as cObj as processed.
@@ -47,7 +45,7 @@ class Cache
      * Checks if a cObj has already added cache tags.
      *
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj
-     * @return boolean
+     * @return bool
      */
     public function isContentRecordAlreadyProcessed(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj)
     {
@@ -66,7 +64,7 @@ class Cache
      */
     public static function addCacheTagsByNewsRecords(array $newsRecords)
     {
-        $cacheTags = array();
+        $cacheTags = [];
         foreach ($newsRecords as $news) {
             // cache tag for each news record
             $cacheTags[] = 'tx_news_uid_' . $news->getUid();
@@ -85,7 +83,7 @@ class Cache
      */
     public static function addPageCacheTagsByDemandObject(\GeorgRinger\News\Domain\Model\Dto\NewsDemand $demand)
     {
-        $cacheTags = array();
+        $cacheTags = [];
         if ($demand->getStoragePage()) {
             // Add cache tags for each storage page
             foreach (GeneralUtility::trimExplode(',', $demand->getStoragePage()) as $pageId) {

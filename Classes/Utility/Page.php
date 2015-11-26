@@ -24,8 +24,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 /**
  * Page Utility class
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class Page
 {
@@ -34,7 +32,7 @@ class Page
      * Find all ids from given ids and level
      *
      * @param string $pidList comma separated list of ids
-     * @param integer $recursive recursive levels
+     * @param int $recursive recursive levels
      * @return string comma separated list of ids
      */
     public static function extendPidListByChildren($pidList = '', $recursive = 0)
@@ -71,7 +69,7 @@ class Page
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $items = GeneralUtility::trimExplode(',', $properties, true);
 
-            $register = array();
+            $register = [];
             foreach ($items as $item) {
                 $key = $prefix . ucfirst($item);
                 try {
@@ -87,8 +85,8 @@ class Page
     /**
      * Return a page tree
      *
-     * @param integer $pageUid page to start with
-     * @param integer $treeLevel count of levels
+     * @param int $pageUid page to start with
+     * @param int $treeLevel count of levels
      * @return PageTreeView
      * @throws \Exception
      */
@@ -108,10 +106,10 @@ class Page
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // Creating top icon; the current page
-        $tree->tree[] = array(
+        $tree->tree[] = [
             'row' => $treeStartingRecord,
             'HTML' => $iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render()
-        );
+        ];
 
         $tree->getTree($pageUid, $treeLevel, '');
         return $tree;

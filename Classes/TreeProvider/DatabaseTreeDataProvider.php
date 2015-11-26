@@ -46,7 +46,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\D
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNode|\TYPO3\CMS\Backend\Tree\TreeNode $basicNode
      * @param NULL|\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $parent
-     * @param integer $level
+     * @param int $level
      * @param bool $restriction
      * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode node
      */
@@ -59,7 +59,7 @@ class DatabaseTreeDataProvider extends \TYPO3\CMS\Core\Tree\TableConfiguration\D
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         /**@param $node \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode */
         $node = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode::class);
-        $row = array();
+        $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
             $node->setExpanded(true);

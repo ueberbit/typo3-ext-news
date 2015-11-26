@@ -83,7 +83,7 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
      * Checks if an update is needed
      *
      * @param string &$description : The description for the update
-     * @return boolean TRUE if an update is needed, FALSE otherwise
+     * @return bool TRUE if an update is needed, FALSE otherwise
      */
     public function checkForUpdate(&$description)
     {
@@ -130,7 +130,7 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
      *
      * @param array &$dbQueries Queries done in this update
      * @param mixed &$customMessages Custom messages
-     * @return boolean TRUE on success, FALSE on error
+     * @return bool TRUE on success, FALSE on error
      */
     public function performUpdate(array &$dbQueries, &$customMessages)
     {
@@ -152,7 +152,6 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
             }
             $this->setCountInNewsRecord('fal_related_files');
         }
-
 
         return true;
     }
@@ -177,7 +176,7 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
             $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
                 'tx_news_domain_model_news',
                 $field . '= 0 AND uid=' . (int)$row['uid'],
-                array($field => $row['count'])
+                [$field => $row['count']]
             );
         }
     }
@@ -216,7 +215,7 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 
             $fileObject = $this->storage->getFile(self::FOLDER_ContentUploads . '/' . $file);
             $this->fileRepository->add($fileObject);
-            $dataArray = array(
+            $dataArray = [
                 'uid_local' => $fileObject->getUid(),
                 'tablenames' => 'tx_news_domain_model_news',
                 'fieldname' => $field,
@@ -229,26 +228,26 @@ class FalUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate
                 'sorting_foreign' => $record['sorting'],
                 'title' => $record['title'],
                 'hidden' => $record['hidden'],
-            );
+            ];
 
             if ($field === 'fal_media') {
-                $description = array();
+                $description = [];
                 if (!empty($record['caption'])) {
                     $description[] = $record['caption'];
                 }
                 if (!empty($record['description'])) {
                     $description[] = $record['description'];
                 }
-                $additionalData = array(
+                $additionalData = [
                     // @todo how to proceed with: copyright
                     'description' => implode(LF . LF, $description),
                     'alternative' => $record['alt'],
                     'showinpreview' => $record['showinpreview']
-                );
+                ];
             } else {
-                $additionalData = array(
+                $additionalData = [
                     'description' => $record['description']
-                );
+                ];
             }
             $dataArray += $additionalData;
 

@@ -18,8 +18,6 @@ namespace GeorgRinger\News\Tests\Unit\ViewHelpers\Format;
 /**
  * Tests for NothingViewHelper
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class NothingViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -30,7 +28,7 @@ class NothingViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function noResultExpected() {
-		$viewHelper = $this->getMock('GeorgRinger\\News\\ViewHelpers\\Format\\NothingViewHelper', array('renderChildren'));
+		$viewHelper = $this->getMock('GeorgRinger\\News\\ViewHelpers\\Format\\NothingViewHelper', ['renderChildren']);
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('whatever content'));
 		$actualResult = $viewHelper->render();
 		$this->assertEquals(NULL, $actualResult);

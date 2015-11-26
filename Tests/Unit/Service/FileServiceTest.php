@@ -19,8 +19,6 @@ use GeorgRinger\News\Service\FileService;
 /**
  * Test class for FileService
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class FileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -57,17 +55,17 @@ class FileServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function validUrlIsReturnedDataProvider() {
 		$siteURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		return array(
-			'validUrl' => array(
+		return [
+			'validUrl' => [
 				'http://www.domain.com/file.flv', 'http://www.domain.com/file.flv'
-			),
-			'simpleRelativeFileInFileadmin' => array(
+			],
+			'simpleRelativeFileInFileadmin' => [
 				$siteURL . 'fileadmin/fo.flv', 'fileadmin/fo.flv'
-			),
-			'simpleRelativeFileInRoot' => array(
+			],
+			'simpleRelativeFileInRoot' => [
 				$siteURL . 'bar.flv', 'bar.flv'
-			)
-		);
+			]
+		];
 	}
 }
 

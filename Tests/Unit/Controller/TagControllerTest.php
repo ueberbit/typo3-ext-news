@@ -20,12 +20,9 @@ use GeorgRinger\News\Domain\Model\Dto\NewsDemand;
 /**
  * Testcase for the TagController class.
  *
- * @package TYPO3
- * @subpackage tx_news
  *
  */
 class TagControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
 
 	/**
 	 * @var TagController
@@ -46,7 +43,7 @@ class TagControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new TagController();
 
 		$this->tagRepository = $this->getMock(
-			'GeorgRinger\\News\\Domain\\Repository\\TagRepository', array(), array(), '', FALSE
+			'GeorgRinger\\News\\Domain\\Repository\\TagRepository', [], [], '', FALSE
 		);
 		$this->fixture->injectTagRepository($this->tagRepository);
 	}
@@ -68,27 +65,27 @@ class TagControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function listActionFindsDemandedTagsByDemandFromSettings() {
 		$demand = new NewsDemand();
-		$settings = array('list' => 'foo', 'orderBy' => 'datetime');
+		$settings = ['list' => 'foo', 'orderBy' => 'datetime'];
 
-		$mockedSignalSlotDispatcher = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher', array('dispatch'));
+		$mockedSignalSlotDispatcher = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher', ['dispatch']);
 		$configurationManager = $this->getMock(
 			'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
 		);
 
 		$fixture = $this->getAccessibleMock(
 			'GeorgRinger\\News\\Controller\\TagController',
-			array('createDemandObjectFromSettings', 'emitActionSignal')
+			['createDemandObjectFromSettings', 'emitActionSignal']
 		);
 		$fixture->_set('signalSlotDispatcher', $mockedSignalSlotDispatcher);
 
 		$fixture->injectTagRepository($this->tagRepository);
 		$fixture->injectConfigurationManager($configurationManager);
-		$fixture->setView($this->getMock('TYPO3\CMS\Fluid\View\TemplateView', array(), array(), '', FALSE));
+		$fixture->setView($this->getMock('TYPO3\CMS\Fluid\View\TemplateView', [], [], '', FALSE));
 		$fixture->_set('settings', $settings);
 
 		$fixture->expects($this->once())->method('createDemandObjectFromSettings')
 			->will($this->returnValue($demand));
-		$fixture->expects($this->once())->method('emitActionSignal')->will($this->returnValue(array()));
+		$fixture->expects($this->once())->method('emitActionSignal')->will($this->returnValue([]));
 
 		$this->tagRepository->expects($this->once())->method('findDemanded')
 			->with($demand);
@@ -96,8 +93,7 @@ class TagControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->listAction();
 
 		// datetime must be removed
-		$this->assertEquals($fixture->_get('settings'), array('list' => 'foo'));
+		$this->assertEquals($fixture->_get('settings'), ['list' => 'foo']);
 	}
-
 
 }

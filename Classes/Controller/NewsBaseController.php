@@ -21,8 +21,6 @@ use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 /**
  * Base controller
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class NewsBaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
@@ -74,7 +72,6 @@ class NewsBaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             throw $exception;
         }
     }
-
 
     /**
      * Error handling if no news entry is found
@@ -135,7 +132,7 @@ class NewsBaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     protected function emitActionSignal($classPart, $signalName, array $signalArguments)
     {
-        $signalArguments['extendedVariables'] = array();
+        $signalArguments['extendedVariables'] = [];
         return $this->signalSlotDispatcher->dispatch('GeorgRinger\\News\\Controller\\' . $classPart, $signalName,
             $signalArguments);
     }

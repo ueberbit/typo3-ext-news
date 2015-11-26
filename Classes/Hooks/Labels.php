@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Userfunc to get alternative label
  *
- * @package    TYPO3
- * @subpackage    tx_news
  */
 class Labels
 {
@@ -104,7 +102,7 @@ class Labels
 
         // Hook to modify the label, especially useful when using custom media relations
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'])) {
-            $params = array('params' => $params, 'title' => $title);
+            $params = ['params' => $params, 'title' => $title];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['mediaLabel'] as $reference) {
                 $title = GeneralUtility::callUserFunction($reference, $params, $this);
             }
@@ -128,8 +126,8 @@ class Labels
     /**
      * Get news categories based on the news id
      *
-     * @param integer $newsUid
-     * @param integer $catMm
+     * @param int $newsUid
+     * @param int $catMm
      * @return string list of categories
      */
     protected function getCategories($newsUid, $catMm)
@@ -138,7 +136,7 @@ class Labels
             return '';
         }
 
-        $catTitles = array();
+        $catTitles = [];
         $res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query(
             'sys_category.title as title',
             'tx_news_domain_model_news',
@@ -161,7 +159,7 @@ class Labels
      * @param array $record record
      * @return string 1st used field
      */
-    protected function getTitleFromFields($fieldList, $record = array())
+    protected function getTitleFromFields($fieldList, $record = [])
     {
         $title = '';
         $fields = GeneralUtility::trimExplode(',', $fieldList, true);

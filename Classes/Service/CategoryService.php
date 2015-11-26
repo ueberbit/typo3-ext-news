@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service for category related stuff
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class CategoryService
 {
@@ -31,9 +29,9 @@ class CategoryService
      * and using the caching framework to save some queries
      *
      * @param string $idList list of category ids to start
-     * @param integer $counter
+     * @param int $counter
      * @param string $additionalWhere additional where clause
-     * @param boolean $removeGivenIdListFromResult remove the given id list from result
+     * @param bool $removeGivenIdListFromResult remove the given id list from result
      * @return string comma separated list of category ids
      */
     public static function getChildrenCategories(
@@ -79,7 +77,7 @@ class CategoryService
      * Get rootline up by calling recursive function
      * and using the caching framework to save some queries
      *
-     * @param integer $id category id to start
+     * @param int $id category id to start
      * @param string $additionalWhere additional where clause
      * @return string comma separated list of category ids
      */
@@ -101,13 +99,13 @@ class CategoryService
      * Get child categories
      *
      * @param string $idList list of category ids to start
-     * @param integer $counter
+     * @param int $counter
      * @param string $additionalWhere additional where clause
      * @return string comma separated list of category ids
      */
     private static function getChildrenCategoriesRecursive($idList, $counter = 0, $additionalWhere = '')
     {
-        $result = array();
+        $result = [];
 
         // add idlist to the output too
         if ($counter === 0) {
@@ -138,15 +136,15 @@ class CategoryService
     /**
      * Get rootline categories
      *
-     * @param integer $id category id to start
-     * @param integer $counter counter
+     * @param int $id category id to start
+     * @param int $counter counter
      * @param string $additionalWhere additional where clause
      * @return string comma separated list of category ids
      */
     public static function getRootlineRecursive($id, $counter = 0, $additionalWhere = '')
     {
         $id = (int)$id;
-        $result = array();
+        $result = [];
 
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'uid,parent',
@@ -170,7 +168,6 @@ class CategoryService
         return $result;
     }
 
-
     /**
      * Translate a category record in the backend
      *
@@ -179,7 +176,7 @@ class CategoryService
      * @return string
      * @throws \UnexpectedValueException
      */
-    public static function translateCategoryRecord($default, array $row = array())
+    public static function translateCategoryRecord($default, array $row = [])
     {
         if (TYPO3_MODE != 'BE') {
             throw new \UnexpectedValueException('TYPO3 Mode must be BE');

@@ -43,8 +43,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
  *    }
  * </output>
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class ObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -76,7 +74,7 @@ class ObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
         /* @var $dataMapper DataMapper */
         $dataMapper = $objectManager->get(DataMapper::class);
 
-        $records = $dataMapper->map($className, array($rawRecord));
+        $records = $dataMapper->map($className, [$rawRecord]);
         $record = array_shift($records);
 
         $this->templateVariableContainer->add($as, $record);

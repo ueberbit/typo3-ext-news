@@ -14,6 +14,7 @@ namespace GeorgRinger\News\Hooks;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Form\Wizard\SuggestWizardDefaultReceiver;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,10 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Custom suggest receiver for tags
  *
- * @package    TYPO3
- * @subpackage    tx_news
  */
-class SuggestReceiver extends \TYPO3\CMS\Backend\Form\Element\SuggestDefaultReceiver
+class SuggestReceiver extends SuggestWizardDefaultReceiver
 {
 
     /**
@@ -34,15 +33,13 @@ class SuggestReceiver extends \TYPO3\CMS\Backend\Form\Element\SuggestDefaultRece
      * they only need to be put into a <li>-structure
      *
      * @param array $params
-     * @param integer $recursionCounter recursion counter
+     * @param int $recursionCounter recursion counter
      * @return mixed array of rows or FALSE if nothing found
      */
     public function queryTable(&$params, $recursionCounter = 0)
     {
         $uid = (int)GeneralUtility::_GP('uid');
-
         $records = parent::queryTable($params, $recursionCounter);
-
         if ($this->checkIfTagIsNotFound($records)) {
             $text = GeneralUtility::quoteJSvalue($params['value']);
             $javaScriptCode = '
@@ -50,6 +47,7 @@ var value=' . $text . ';
 
 Ext.Ajax.request({
 	url : \'ajax.php\' ,
+	method: "GET",
 	params : { ajaxID : \'News::createTag\', item:value,newsid:\'' . $uid . '\' },
 	success: function ( result, request ) {
 		var arr = result.responseText.split(\'-\');
@@ -63,9 +61,9 @@ Ext.Ajax.request({
 ';
 
             $javaScriptCode = trim(str_replace('"', '\'', $javaScriptCode));
-            $link = implode(' ', explode(chr(10), $javaScriptCode));
+            $link = implode(' ', explode(LF, $javaScriptCode));
 
-            $records['tx_news_domain_model_tag_' . strlen($text)] = array(
+            $records['tx_news_domain_model_tag_' . strlen($text)] = [
                 'text' => '<div onclick="' . $link . '">
 							<span class="suggest-path">
 								<a>' .
@@ -75,8 +73,8 @@ Ext.Ajax.request({
 							</span></div>',
                 'table' => 'tx_news_domain_model_tag',
                 'class' => 'suggest-noresults',
-                'icon' => $this->getDummyIcon()->render(),
-            );
+                'icon' => $this->getDummyIcon()->render()
+            ];
         }
 
         return $records;
@@ -86,7 +84,7 @@ Ext.Ajax.request({
      * Check if current tag is found.
      *
      * @param array $tags returned tags
-     * @return boolean
+     * @return bool
      */
     protected function checkIfTagIsNotFound(array $tags)
     {

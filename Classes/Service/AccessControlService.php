@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Service for access control related stuff
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class AccessControlService
 {
@@ -31,7 +29,7 @@ class AccessControlService
      * Check if a user has access to all categories of a news record
      *
      * @param array $newsRecord
-     * @return boolean
+     * @return bool
      */
     public static function userHasCategoryPermissionsForRecord(array $newsRecord)
     {
@@ -62,13 +60,13 @@ class AccessControlService
     {
         if (self::getBackendUser()->isAdmin()) {
             // an admin may edit all news so no categories without access
-            return array();
+            return [];
         }
 
         // no category mounts set means access to all
         $backendUserCategories = self::getBackendUser()->getCategoryMountPoints();
-        if ($backendUserCategories === array()) {
-            return array();
+        if ($backendUserCategories === []) {
+            return [];
         }
 
         /** @var CategoryService $catService */
@@ -136,12 +134,12 @@ class AccessControlService
             $whereClause
         );
 
-        $categories = array();
+        $categories = [];
         while (($row = self::getDatabaseConnection()->sql_fetch_assoc($res))) {
-            $categories[] = array(
+            $categories[] = [
                 'uid' => $row['uid_local'],
                 'title' => $row['title']
-            );
+            ];
         }
         self::getDatabaseConnection()->sql_free_result($res);
         return $categories;

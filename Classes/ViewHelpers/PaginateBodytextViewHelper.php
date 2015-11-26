@@ -61,8 +61,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *    </f:if>
  * </n:paginateBodytext>
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -72,7 +70,7 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      *
      * @param \GeorgRinger\News\Domain\Model\News $object current news object
      * @param string $as name of property which holds the text
-     * @param integer $currentPage Selected page
+     * @param int $currentPage Selected page
      * @param string $token Token used to split the text
      * @return string
      */
@@ -91,8 +89,8 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
                 $currentPage = $numberOfPages;
             }
 
-            $tagsToOpen = array();
-            $tagsToClose = array();
+            $tagsToOpen = [];
+            $tagsToClose = [];
 
             for ($j = 0; $j < $currentPage; $j++) {
                 $chunk = $parts[$j];
@@ -127,16 +125,16 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
             }
         }
 
-        $pages = array();
+        $pages = [];
         for ($i = 1; $i <= $numberOfPages; $i++) {
-            $pages[] = array('number' => $i, 'isCurrent' => ($i === $currentPage));
+            $pages[] = ['number' => $i, 'isCurrent' => ($i === $currentPage)];
         }
 
-        $pagination = array(
+        $pagination = [
             'pages' => $pages,
             'numberOfPages' => $numberOfPages,
             'current' => $currentPage
-        );
+        ];
 
         if ($currentPage < $numberOfPages) {
             $pagination['nextPage'] = $currentPage + 1;
@@ -175,7 +173,7 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      * Checks whether a given tag is self closing
      *
      * @param string $tag
-     * @return boolean
+     * @return bool
      */
     protected function isSelfClosingTag($tag)
     {
@@ -186,7 +184,7 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      * Checks whether a given tag is closing tag
      *
      * @param string $tag
-     * @return boolean
+     * @return bool
      */
     protected function isClosingTag($tag)
     {
@@ -197,7 +195,7 @@ class PaginateBodytextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstra
      * Checks whether a given Tag is a an opening tag
      *
      * @param string $tag
-     * @return boolean
+     * @return bool
      */
     protected function isOpeningTag($tag)
     {

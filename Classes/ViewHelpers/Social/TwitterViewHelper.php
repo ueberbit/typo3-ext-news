@@ -29,8 +29,6 @@ namespace GeorgRinger\News\ViewHelpers\Social;
  * dataurl="http://www.mydomain.tld">Twitter</n:social.twitter>
  * Result: Twitter widget to share www.mydomain.tld with a german twitter text
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class TwitterViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper
 {
@@ -88,7 +86,7 @@ class TwitterViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBase
             (!empty($this->arguments['class'])) ? $this->arguments['class'] : 'twitter-share-button');
 
         // rewrite tags as it seems that it is not possible to have tags with a '-'.
-        $rewriteTags = array('datacount', 'datavia', 'datarelated', 'datatext', 'dataurl', 'datalang');
+        $rewriteTags = ['datacount', 'datavia', 'datarelated', 'datatext', 'dataurl', 'datalang'];
         foreach ($rewriteTags as $tag) {
             if (!empty($this->arguments[$tag])) {
                 $newTag = str_replace('data', 'data-', $tag);

@@ -14,7 +14,6 @@ namespace GeorgRinger\News\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use GeorgRinger\News\Domain\Model\DemandInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
@@ -23,8 +22,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 /**
  * Abstract demanded repository
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 abstract class AbstractDemandedRepository
     extends \TYPO3\CMS\Extbase\Persistence\Repository
@@ -71,7 +68,7 @@ abstract class AbstractDemandedRepository
      * Returns the objects of this repository matching the demand.
      *
      * @param DemandInterface $demand
-     * @param boolean $respectEnableFields
+     * @param bool $respectEnableFields
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
     public function findDemanded(DemandInterface $demand, $respectEnableFields = true)
@@ -85,7 +82,7 @@ abstract class AbstractDemandedRepository
      * Returns the database query to get the matching result
      *
      * @param DemandInterface $demand
-     * @param boolean $respectEnableFields
+     * @param bool $respectEnableFields
      * @return string
      */
     public function findDemandedRaw(DemandInterface $demand, $respectEnableFields = true)
@@ -111,7 +108,7 @@ abstract class AbstractDemandedRepository
             } elseif ($parameter instanceof DomainObjectInterface) {
                 $parameter = (int)$parameter->getUid();
             } elseif (is_array($parameter)) {
-                $subParameters = array();
+                $subParameters = [];
                 foreach ($parameter as $subParameter) {
                     $subParameters[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($subParameter, $tableNameForEscape);
                 }
@@ -127,7 +124,7 @@ abstract class AbstractDemandedRepository
             $statementParts['where'] = str_replace($parameterPlaceholder, $parameter, $statementParts['where']);
         }
 
-        $statementParts = array(
+        $statementParts = [
             'selectFields' => implode(' ', $statementParts['keywords']) . ' ' . implode(',', $statementParts['fields']),
             'fromTable' => implode(' ', $statementParts['tables']) . ' ' . implode(' ', $statementParts['unions']),
             'whereClause' => (!empty($statementParts['where']) ? implode('', $statementParts['where']) : '1')
@@ -138,7 +135,7 @@ abstract class AbstractDemandedRepository
             'orderBy' => (!empty($statementParts['orderings']) ? implode(', ', $statementParts['orderings']) : ''),
             'limit' => ($statementParts['offset'] ? $statementParts['offset'] . ', ' : '')
                 . ($statementParts['limit'] ? $statementParts['limit'] : '')
-        );
+        ];
 
         $sql = $GLOBALS['TYPO3_DB']->SELECTquery(
             $statementParts['selectFields'],
@@ -162,12 +159,12 @@ abstract class AbstractDemandedRepository
 
         // Call hook functions for additional constraints
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['Domain/Repository/AbstractDemandedRepository.php']['findDemanded'])) {
-            $params = array(
+            $params = [
                 'demand' => $demand,
                 'respectEnableFields' => &$respectEnableFields,
                 'query' => $query,
                 'constraints' => &$constraints,
-            );
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['Domain/Repository/AbstractDemandedRepository.php']['findDemanded'] as $reference) {
                 \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($reference, $params, $this);
             }
@@ -256,7 +253,7 @@ abstract class AbstractDemandedRepository
                 if ($parameter === null) {
                     $parameter = 'NULL';
                 } elseif (is_array($parameter) || $parameter instanceof \ArrayAccess || $parameter instanceof \Traversable) {
-                    $items = array();
+                    $items = [];
                     foreach ($parameter as $item) {
                         $items[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($item, $tableName);
                     }

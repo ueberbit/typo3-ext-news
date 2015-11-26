@@ -19,8 +19,6 @@ use GeorgRinger\News\Domain\Model\Dto\AdministrationDemand;
 /**
  * Tests for AdministrationDemand
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class AdministrationDemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -50,7 +48,7 @@ class AdministrationDemandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function selectedCategoriesCanBeSet() {
-		$value = array('Test 123');
+		$value = ['Test 123'];
 		$this->instance->setCategories($value);
 		$this->assertEquals($value, $this->instance->getCategories());
 	}

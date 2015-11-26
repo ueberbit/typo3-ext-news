@@ -18,8 +18,6 @@ namespace GeorgRinger\News\Tests\Unit\Hooks;
 /**
  * Tests for PageLayoutView
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -29,16 +27,13 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$languageService = $this->getMock('TYPO3\\CMS\\Core\\Utility\\GeneralUtility\\LanguageService', array('sL'));
+		$languageService = $this->getMock('TYPO3\\CMS\\Core\\Utility\\GeneralUtility\\LanguageService', ['sL']);
 		$languageService->expects($this->any())->method('sL')->will($this->returnValue('any language'));
 
 		$GLOBALS['LANG'] = $languageService;
 
-
-
-
-		$this->pageLayoutView = $this->getAccessibleMock('GeorgRinger\\News\\Hooks\\PageLayoutView', array('dummy'));
-		$this->pageLayoutView->_set('databaseConnection', $this->getMock('TYPO3\CMS\\Core\\Utility\\GeneralUtility\\DatabaseConnection', array('exec_SELECTquery', 'exec_SELECTgetRows')));
+		$this->pageLayoutView = $this->getAccessibleMock('GeorgRinger\\News\\Hooks\\PageLayoutView', ['dummy']);
+		$this->pageLayoutView->_set('databaseConnection', $this->getMock('TYPO3\CMS\\Core\\Utility\\GeneralUtility\\DatabaseConnection', ['exec_SELECTquery', 'exec_SELECTgetRows']));
 	}
 
 	/**
@@ -46,7 +41,7 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getArchiveSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.archiveRestriction', 'something');
 
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -59,7 +54,7 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getDetailPidSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.detailPid', '9999999999', 'additional');
 
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -67,13 +62,12 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals(count($this->pageLayoutView->_get('tableData')), 1);
 	}
 
-
 	/**
 	 * @test
 	 * @return void
 	 */
 	public function getTagRestrictionSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.tags', '9999999999', 'additional');
 
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -81,14 +75,12 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals(count($this->pageLayoutView->_get('tableData')), 1);
 	}
 
-
-
 	/**
 	 * @test
 	 * @return void
 	 */
 	public function getListPidSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.listPid', '9999999999', 'additional');
 
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -101,7 +93,7 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getOrderBySettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.orderBy', 'fo');
 
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -114,7 +106,7 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getOrderDirectionSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.orderDirection', 'asc');
 
 		$this->assertEquals($this->pageLayoutView->_call('getOrderDirectionSetting'), '');
@@ -129,7 +121,7 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getTopNewsFirstSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.topNewsFirst', '1', 'additional');
 
 		$this->assertEquals($this->pageLayoutView->_call('getTopNewsFirstSetting'), '');
@@ -139,13 +131,12 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals((strlen($out) > 1), TRUE);
 	}
 
-
 	/**
 	 * @test
 	 * @return void
 	 */
 	public function getOffsetLimitSettingsAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.offset', '1', 'additional');
 		$this->pageLayoutView->_set('flexformData', $flexform);
 		$this->pageLayoutView->_call('getOffsetLimitSettings');
@@ -172,20 +163,19 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getDateMenuSettingsAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.dateField', 'field');
 		$this->pageLayoutView->_set('flexformData', $flexform);
 		$this->pageLayoutView->_call('getDateMenuSettings');
 		$this->assertEquals(count($this->pageLayoutView->_get('tableData')), 1);
 	}
 
-
 	/**
 	 * @test
 	 * @return void
 	 */
 	public function getTimeRestrictionSettingAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.timeRestriction', 'fo');
 		$this->pageLayoutView->_set('flexformData', $flexform);
 		$this->pageLayoutView->_call('getTimeRestrictionSetting');
@@ -202,10 +192,10 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getTemplateLayoutSettingsAddsValueIfFilled() {
-		$flexform = array();
-		$mockedTemplateLayout = $this->getMock('GeorgRinger\\News\\Utility\\TemplateLayout', array('getAvailableTemplateLayouts'));
+		$flexform = [];
+		$mockedTemplateLayout = $this->getMock('GeorgRinger\\News\\Utility\\TemplateLayout', ['getAvailableTemplateLayouts']);
 
-		$mockedTemplateLayout->expects($this->once())->method('getAvailableTemplateLayouts')->will($this->returnValue(array(array('bar', 'fo'))));
+		$mockedTemplateLayout->expects($this->once())->method('getAvailableTemplateLayouts')->will($this->returnValue([['bar', 'fo']]));
 
 		$this->addContentToFlexform($flexform, 'settings.templateLayout', 'fo', 'template');
 		$this->pageLayoutView->_set('flexformData', $flexform);
@@ -220,13 +210,12 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function getOverrideDemandSettingsAddsValueIfFilled() {
-		$flexform = array();
+		$flexform = [];
 		$this->addContentToFlexform($flexform, 'settings.disableOverrideDemand', '1', 'additional');
 		$this->pageLayoutView->_set('flexformData', $flexform);
 		$this->pageLayoutView->_call('getOverrideDemandSettings');
 		$this->assertEquals(count($this->pageLayoutView->_get('tableData')), 1);
 	}
-
 
 	/**
 	 * Add content to given flexform
@@ -238,17 +227,17 @@ class PageLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function addContentToFlexform(array &$flexform, $key, $value, $sheet = 'sDEF') {
-		$flexform = array(
-			'data' => array(
-				$sheet => array(
-					'lDEF' => array(
-						$key => array(
+		$flexform = [
+			'data' => [
+				$sheet => [
+					'lDEF' => [
+						$key => [
 							'vDEF' => $value
-						)
-					)
-				)
-			)
-		);
+						]
+					]
+				]
+			]
+		];
 	}
 
 }

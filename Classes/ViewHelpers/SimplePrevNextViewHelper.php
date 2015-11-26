@@ -102,7 +102,7 @@ class SimplePrevNextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
      */
     protected function mapResultToObjects(array $result)
     {
-        $out = $tmp = array();
+        $out = $tmp = [];
         $count = count($result);
 
         switch ($count) {
@@ -116,9 +116,11 @@ class SimplePrevNextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
             case 1:
                 $tmp['next'] = $result[0];
                 break;
+            case 0:
+                // no next or prev news, shit happens....
+                break;
             default:
-                throw new \UnexpectedValueException(sprintf('Unexpected count of "%s" which is not implemented!',
-                    $count));
+                throw new \UnexpectedValueException(sprintf('Unexpected count of "%s" which is not implemented!', $count));
         }
 
         foreach ($tmp as $_id => $single) {
@@ -131,7 +133,7 @@ class SimplePrevNextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
     /**
      * Get the news object from the given id
      *
-     * @param integer $id
+     * @param int $id
      * @return mixed|null
      */
     protected function getObject($id)
@@ -143,7 +145,7 @@ class SimplePrevNextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
         if (is_array($rawRecord)) {
             $className = 'GeorgRinger\\News\\Domain\\Model\\News';
 
-            $records = $this->dataMapper->map($className, array($rawRecord));
+            $records = $this->dataMapper->map($className, [$rawRecord]);
             $record = array_shift($records);
         }
 
@@ -205,7 +207,7 @@ class SimplePrevNextViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 			';
 
         $res = $this->databaseConnection->sql_query($query);
-        $out = array();
+        $out = [];
         while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
             $out[] = $row;
         }

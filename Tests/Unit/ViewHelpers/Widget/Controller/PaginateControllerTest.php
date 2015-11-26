@@ -18,8 +18,6 @@ namespace GeorgRinger\News\Tests\Unit\ViewHelpers\Widget\Controller;
 /**
  * Tests for PaginateController
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -34,27 +32,27 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->controller = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\Widget\\Controller\\PaginateController', array('dummy'), array(), '', FALSE);
+		$this->controller = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\Widget\\Controller\\PaginateController', ['dummy'], [], '', FALSE);
 	}
 
 	/**
 	 * @test
 	 */
 	public function initializationIsCorrect() {
-		$controller = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\Widget\\Controller\\PaginateController', array('dummy'));
-		$objects = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-		$configuration = array(
+		$controller = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\Widget\\Controller\\PaginateController', ['dummy']);
+		$objects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+		$configuration = [
 			'templatePath' => 'fo/bar',
 			'itemsPerPage' => '3',
-		);
-		$widgetConfiguration = array('fo' => 'bar');
+		];
+		$widgetConfiguration = ['fo' => 'bar'];
 		$controller->_set('configuration', $configuration);
 		$controller->_set(
 			'widgetConfiguration',
-			array(
+			[
 				'configuration' => $widgetConfiguration,
 				'objects' => $objects
-			));
+			]);
 
 		$controller->initializeAction();
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($configuration, $widgetConfiguration, TRUE);
@@ -63,7 +61,6 @@ class PaginateControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($controller->_get('numberOfPages'), 5);
 		$this->assertEquals($controller->_get('templatePath'), PATH_site . 'fo/bar');
 	}
-
 
 	/**
 	 * @test

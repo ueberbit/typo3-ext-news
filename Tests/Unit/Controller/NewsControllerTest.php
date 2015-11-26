@@ -21,8 +21,6 @@ use GeorgRinger\News\Domain\Model\News;
 /**
  * Testcase for the NewsController class.
  *
- * @package TYPO3
- * @subpackage tx_news
  *
  */
 class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
@@ -46,7 +44,7 @@ class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new NewsController();
 
 		$this->newsRepository = $this->getMock(
-			'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', array(), array(), '', FALSE
+			'GeorgRinger\\News\\Domain\\Repository\\NewsRepository', [], [], '', FALSE
 		);
 		$this->fixture->injectNewsRepository($this->newsRepository);
 	}
@@ -68,7 +66,7 @@ class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function listActionFindsDemandedNewsByDemandFromSettings() {
 		$demand = clone new AdministrationDemand();
-		$settings = array('list' => 'foo', 'orderByAllowed' => NULL);
+		$settings = ['list' => 'foo', 'orderByAllowed' => NULL];
 
 		$configurationManager = $this->getMock(
 			'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
@@ -78,13 +76,13 @@ class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$fixture = $this->getMock(
 			'GeorgRinger\\News\\Controller\\NewsController',
-			array('createDemandObjectFromSettings', 'emitActionSignal')
+			['createDemandObjectFromSettings', 'emitActionSignal']
 		);
 		$fixture->injectNewsRepository($this->newsRepository);
 		$fixture->injectConfigurationManager($configurationManager);
-		$fixture->setView($this->getMock('TYPO3\CMS\Fluid\View\TemplateView', array(), array(), '', FALSE));
+		$fixture->setView($this->getMock('TYPO3\CMS\Fluid\View\TemplateView', [], [], '', FALSE));
 
-		$fixture->expects($this->once())->method('emitActionSignal')->will($this->returnValue(array()));
+		$fixture->expects($this->once())->method('emitActionSignal')->will($this->returnValue([]));
 		$fixture->expects($this->once())->method('createDemandObjectFromSettings')
 			->with($settings)->will($this->returnValue($demand));
 
@@ -94,32 +92,31 @@ class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->listAction();
 	}
 
-
 	/**
 	 * @test
 	 */
 	public function checkPidOfNewsRecordWorks() {
-		$mockedSignalDispatcher = $this->getAccessibleMock('\TYPO3\CMS\Extbase\SignalSlot\Dispatcher', array('dummy'));
+		$mockedSignalDispatcher = $this->getAccessibleMock('\TYPO3\CMS\Extbase\SignalSlot\Dispatcher', ['dummy']);
 		$mockedController = $this->getAccessibleMock('GeorgRinger\\News\\Controller\\NewsController',
-			array('dummy'));
+			['dummy']);
 		$mockedController->_set('signalSlotDispatcher', $mockedSignalDispatcher);
 
 		$news = new News();
 
 		// No startingpoint
-		$mockedController->_set('settings', array('startingpoint' => ''));
+		$mockedController->_set('settings', ['startingpoint' => '']);
 		$news->setPid(45);
 
 		$this->assertEquals($news, $mockedController->_call('checkPidOfNewsRecord', $news));
 
 		// startingpoint defined
-		$mockedController->_set('settings', array('startingpoint' => '1,2,123,456'));
+		$mockedController->_set('settings', ['startingpoint' => '1,2,123,456']);
 		$news->setPid(123);
 
 		$this->assertEquals($news, $mockedController->_call('checkPidOfNewsRecord', $news));
 
 		// startingpoint is different
-		$mockedController->_set('settings', array('startingpoint' => '123,456'));
+		$mockedController->_set('settings', ['startingpoint' => '123,456']);
 		$news->setPid(45);
 
 		$this->assertEquals(NULL, $mockedController->_call('checkPidOfNewsRecord', $news));
@@ -130,11 +127,11 @@ class NewsControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \UnexpectedValueException
 	 */
 	public function exceptionForInvalidDemandClass() {
-		$mockedController = $this->getAccessibleMock('GeorgRinger\\News\\Controller\\NewsController', array('dummy'));
-		$mockedObjectManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', array('get'));
+		$mockedController = $this->getAccessibleMock('GeorgRinger\\News\\Controller\\NewsController', ['dummy']);
+		$mockedObjectManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', ['get']);
 		$mockedObjectManager->expects($this->once())->method('get')->willReturn('fo');
 		$mockedController->_set('objectManager', $mockedObjectManager);
-		$settings = array('fo' => 'bar');
+		$settings = ['fo' => 'bar'];
 		$mockedController->_call('createDemandObjectFromSettings', $settings, 'fo');
 	}
 

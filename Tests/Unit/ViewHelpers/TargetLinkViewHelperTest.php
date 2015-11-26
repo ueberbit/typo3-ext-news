@@ -38,7 +38,6 @@ class TargetLinkViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertInstanceOf('GeorgRinger\\News\\ViewHelpers\\TargetLinkViewHelper', $instance);
 	}
 
-
 	/**
 	 * Test if correct target is returned
 	 *
@@ -57,24 +56,24 @@ class TargetLinkViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function correctTargetIsReturnedDataProvider() {
-		return array(
-			'noTargetSetAndUrlDefined' => array(
+		return [
+			'noTargetSetAndUrlDefined' => [
 				'www.typo3.org', ''
-			),
-			'noTargetSetAndIdDefined' => array(
+			],
+			'noTargetSetAndIdDefined' => [
 				'123', ''
-			),
-			'IdAndTargetDefined' => array(
+			],
+			'IdAndTargetDefined' => [
 				'123 _blank', '_blank'
-			),
-			'UrlAndPopupDefined' => array(
+			],
+			'UrlAndPopupDefined' => [
 				'www.typo3.org 300x400', ''
-			),
-			'ComplexExample' => array(
+			],
+			'ComplexExample' => [
 				'www.typo3.org _fo my-class', '_fo'
-			),
+			],
 
-		);
+		];
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'News system',
 	'description' => 'Versatile news extension, based on extbase & fluid. Editor friendly, default integration of social sharing and many other features',
 	'category' => 'fe',
@@ -18,13 +18,13 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 1,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '3.2.2',
-	'constraints' => array(
-		'depends' => array(
-			'typo3' => '7.5.0-7.99.99',
-		),
-		'conflicts' => array(),
-		'suggests' => array(),
-	),
-	'suggests' => array(),
-);
+	'version' => '4.0.0',
+	'constraints' => [
+		'depends' => [
+			'typo3' => '7.6.0-7.99.99',
+		],
+		'conflicts' => [],
+		'suggests' => [],
+	],
+	'suggests' => [],
+];

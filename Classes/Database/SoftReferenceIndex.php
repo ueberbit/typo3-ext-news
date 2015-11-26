@@ -17,8 +17,6 @@ namespace GeorgRinger\News\Database;
 /**
  * Class for processing news soft reference types
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class SoftReferenceIndex
 {
@@ -31,12 +29,12 @@ class SoftReferenceIndex
      *
      * @param string $table Database table name
      * @param string $field Field name for which processing occurs
-     * @param integer $uid UID of the record
+     * @param int $uid UID of the record
      * @param string $content The content/value of the field
      * @param string $spKey The softlink parser key. This is only interesting if more than one parser is grouped in the same class. That is the case with this parser.
      * @param array $spParams Parameters of the softlink parser. Basically this is the content inside optional []-brackets after the softref keys. Parameters are exploded by ";
      * @param string $structurePath If running from inside a FlexForm structure, this is the path of the tag.
-     * @return array|boolean Result array on positive matches, see description above. Otherwise FALSE
+     * @return array|bool Result array on positive matches, see description above. Otherwise FALSE
      */
     public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '')
     {
@@ -68,12 +66,12 @@ class SoftReferenceIndex
             $linkElement = explode(',', $content);
         } else {
             // If only one element, just set in this array to make it easy below.
-            $linkElement = array($content);
+            $linkElement = [$content];
         }
         // Traverse the links now:
-        $elements = array();
+        $elements = [];
         foreach ($linkElement as $k => $typolinkValue) {
-            $typolinkProperties = array();
+            $typolinkProperties = [];
             list($linkUrl, $browserTarget, $cssClass) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ',
                 $typolinkValue, 1);
             //Add http as default schema for external urls if none given
@@ -92,10 +90,10 @@ class SoftReferenceIndex
         }
         // Return output:
         if (count($elements)) {
-            $resultArray = array(
+            $resultArray = [
                 'content' => implode(',', $linkElement),
                 'elements' => $elements
-            );
+            ];
             return $resultArray;
         }
 
@@ -108,7 +106,7 @@ class SoftReferenceIndex
      * @param array $typolinkProperties TypoLink properties
      * @param array $elements Array of elements to be modified with substitution / information entries.
      * @param string $content The content to process.
-     * @param integer $idx Index value of the found element - user to make unique but stable tokenID
+     * @param int $idx Index value of the found element - user to make unique but stable tokenID
      * @return string The input content, possibly containing tokens now according to the added substitution entries in $elements
      * @see getTypoLinkParts()
      */
@@ -118,17 +116,17 @@ class SoftReferenceIndex
 
         // Initialize, set basic values. In any case a link will be shown
         $tokenId = $this->makeTokenID('setTypoLinkPartsElement:' . $idx);
-        $elements[$tokenId . ':' . $idx] = array();
+        $elements[$tokenId . ':' . $idx] = [];
         $elements[$tokenId . ':' . $idx]['matchString'] = $content;
         // Based on link type, maybe do more:
         switch ((string)$typolinkProperties['LINK_TYPE']) {
             case 'url':
                 // Mail addresses and URLs can be substituted manually:
-                $elements[$tokenId . ':' . $idx]['subst'] = array(
+                $elements[$tokenId . ':' . $idx]['subst'] = [
                     'type' => 'string',
                     'tokenID' => $tokenId,
                     'tokenValue' => $typolinkProperties['url']
-                );
+                ];
                 // Output content will be the token instead:
                 $content = '{softref:' . $tokenId . '}';
                 break;

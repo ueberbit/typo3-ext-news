@@ -18,8 +18,6 @@ namespace GeorgRinger\News\Tests\Unit\Domain\Repository;
 /**
  * Tests for domain repository categoryRepository
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -33,10 +31,10 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->backupGlobalVariables = array(
+		$this->backupGlobalVariables = [
 			'BE_USER' => $GLOBALS['BE_USER'],
 			'TSFE' => $GLOBALS['TSFE'],
-		);
+		];
 	}
 
 	public function tearDown() {
@@ -54,9 +52,9 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \GeorgRinger\\News\\Domain\\Repository\\CategoryRepository $mockTemplateParser */
 		if (version_compare(TYPO3_branch, '6.2', '>=')) {
 			$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'), array($objectManager));
+			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy'], [$objectManager]);
 		} else {
-			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'));
+			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy']);
 		}
 		$result = $mockTemplateParser->_call('getSysLanguageUid');
 
@@ -64,7 +62,7 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals(0, $result);
 
 		if (!is_object($GLOBALS['TSFE'])) {
-			$vars = array();
+			$vars = [];
 			$type = 1;
 			$GLOBALS['TSFE'] = new \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController($vars, 123, $type);
 		}
@@ -82,9 +80,9 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		/** @var \GeorgRinger\News\Domain\Repository\CategoryRepository $mockedCategoryRepository */
 		if (version_compare(TYPO3_branch, '6.2', '>=')) {
 			$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-			$mockedCategoryRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'), array($objectManager));
+			$mockedCategoryRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy'], [$objectManager]);
 		} else {
-			$mockedCategoryRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'));
+			$mockedCategoryRepository = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy']);
 		}
 		unset($GLOBALS['TSFE']);
 
@@ -107,7 +105,6 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals(13, $result);
 	}
 
-
 	/**
 	 * Test if category ids are replaced
 	 *
@@ -120,9 +117,9 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function categoryIdsAreCorrectlyReplaced($expectedResult, $given) {
 		if (version_compare(TYPO3_branch, '6.2', '>=')) {
 			$objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'), array($objectManager));
+			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy'], [$objectManager]);
 		} else {
-			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', array('dummy'));
+			$mockTemplateParser = $this->getAccessibleMock('GeorgRinger\\News\\Domain\\Repository\\CategoryRepository', ['dummy']);
 		}
 
 		$result = $mockTemplateParser->_call('replaceCategoryIds', $given['idList'], $given['toBeChanged']);
@@ -136,67 +133,67 @@ class CategoryRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function categoryIdsAreCorrectlyReplacedDataProvider() {
-		return array(
-			'emptyRows' => array(
-				array(1, 2, 3),
-				array(
-					'idList' => array(1, 2, 3),
-					'toBeChanged' => array()
-				)
-			),
-			'oneIdReplaced' => array(
-				array(1, 5, 3),
-				array(
-					'idList' => array(1, 2, 3),
-					'toBeChanged' => array(
-						0 => array(
+		return [
+			'emptyRows' => [
+				[1, 2, 3],
+				[
+					'idList' => [1, 2, 3],
+					'toBeChanged' => []
+				]
+			],
+			'oneIdReplaced' => [
+				[1, 5, 3],
+				[
+					'idList' => [1, 2, 3],
+					'toBeChanged' => [
+						0 => [
 							'l10n_parent' => 2,
 							'uid' => 5,
-						)
-					)
-				)
-			),
-			'noIdReplaced' => array(
-				array(1, 2, 3),
-				array(
-					'idList' => array(1, 2, 3),
-					'toBeChanged' => array(
-						0 => array(
+						]
+					]
+				]
+			],
+			'noIdReplaced' => [
+				[1, 2, 3],
+				[
+					'idList' => [1, 2, 3],
+					'toBeChanged' => [
+						0 => [
 							'l10n_parent' => 6,
 							'uid' => 5,
-						),
-						1 => array(
+						],
+						1 => [
 							'l10n_parent' => 8,
 							'uid' => 10,
-						)
-					)
-				)
-			),
-			'allIdsReplaced' => array(
-				array(4, 5, 6),
-				array(
-					'idList' => array(1, 2, 3),
-					'toBeChanged' => array(
-						array(
+						]
+					]
+				]
+			],
+			'allIdsReplaced' => [
+				[4, 5, 6],
+				[
+					'idList' => [1, 2, 3],
+					'toBeChanged' => [
+						[
 							'l10n_parent' => 2,
 							'uid' => 5,
-						),
-						array(
+						],
+						[
 							'l10n_parent' => 1,
 							'uid' => 4,
-						),
-						array(
+						],
+						[
 							'l10n_parent' => 3,
 							'uid' => 6,
-						),
-						array(
+						],
+						[
 							'l10n_parent' => 8,
 							'uid' => 10,
-						)
-					)
-				)
-			),
-		);
+						]
+					]
+				]
+			],
+		];
 	}
 
 }

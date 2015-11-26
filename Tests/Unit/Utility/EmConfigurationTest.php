@@ -19,8 +19,6 @@ use GeorgRinger\News\Utility\EmConfiguration;
 /**
  * Test for EmConfiguration
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -30,11 +28,11 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	private $backupGlobalVariables;
 
 	public function setUp() {
-		$this->backupGlobalVariables = array(
+		$this->backupGlobalVariables = [
 			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
-		);
-		$GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());
-		$GLOBALS[$this->testGlobalNamespace] = array();
+		];
+		$GLOBALS['TCA'][$this->testTableName] = ['ctrl' => []];
+		$GLOBALS[$this->testGlobalNamespace] = [];
 	}
 
 	public function tearDown() {
@@ -62,19 +60,18 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function settingsAreCorrectlyReturnedDataProvider() {
-		return array(
-			'noConfigurationFound' => array(
-				NULL, array()
-			),
-			'wrongConfigurationFound' => array(
-				serialize('Test 123'), array()
-			),
-			'workingConfiguration' => array(
-				serialize(array('key' => 'value')), array('key' => 'value')
-			),
-		);
+		return [
+			'noConfigurationFound' => [
+				NULL, []
+			],
+			'wrongConfigurationFound' => [
+				serialize('Test 123'), []
+			],
+			'workingConfiguration' => [
+				serialize(['key' => 'value']), ['key' => 'value']
+			],
+		];
 	}
-
 
 	/**
 	 * Test if configuration model is correctly returned
@@ -94,20 +91,20 @@ class EmConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array
 	 */
 	public function extensionManagerConfigurationIsCorrectlyReturnedDataProvider() {
-		return array(
-			'noConfigurationFound' => array(
-				NULL, new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration(array())
-			),
-			'wrongConfigurationFound' => array(
-				serialize('Test 123'), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration(array())
-			),
-			'noValidPropertiesFound' => array(
-				serialize(array('key' => 'value')), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration(array())
-			),
-			'validPropertiesFound' => array(
-				serialize(array('key' => 'value', 'pageModuleFieldsNews' => 'test')), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration(array('pageModuleFieldsNews' => 'test'))
-			),
-		);
+		return [
+			'noConfigurationFound' => [
+				NULL, new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration([])
+			],
+			'wrongConfigurationFound' => [
+				serialize('Test 123'), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration([])
+			],
+			'noValidPropertiesFound' => [
+				serialize(['key' => 'value']), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration([])
+			],
+			'validPropertiesFound' => [
+				serialize(['key' => 'value', 'pageModuleFieldsNews' => 'test']), new \GeorgRinger\News\Domain\Model\Dto\EmConfiguration(['pageModuleFieldsNews' => 'test'])
+			],
+		];
 	}
 
 }

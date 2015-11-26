@@ -27,8 +27,6 @@ namespace GeorgRinger\News\ViewHelpers;
  * None
  * </output>
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class ExcludeDisplayedNewsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
@@ -44,7 +42,7 @@ class ExcludeDisplayedNewsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Ab
         $uid = $newsItem->getUid();
 
         if (empty($GLOBALS['EXT']['news']['alreadyDisplayed'])) {
-            $GLOBALS['EXT']['news']['alreadyDisplayed'] = array();
+            $GLOBALS['EXT']['news']['alreadyDisplayed'] = [];
         }
         $GLOBALS['EXT']['news']['alreadyDisplayed'][$uid] = $uid;
 

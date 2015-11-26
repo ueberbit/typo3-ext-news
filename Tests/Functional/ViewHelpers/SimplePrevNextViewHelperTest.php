@@ -14,15 +14,11 @@ namespace GeorgRinger\News\Tests\Unit\Functional\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-
 use GeorgRinger\News\Domain\Model\News;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class SimplePrevNextViewHelperTest
  *
- * @package GeorgRinger\News\Tests\Unit\Functional\ViewHelpers
  */
 class SimplePrevNextViewHelperTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
@@ -32,12 +28,12 @@ class SimplePrevNextViewHelperTest extends \TYPO3\CMS\Core\Tests\FunctionalTestC
 	/** @var \GeorgRinger\News\Domain\Model\News */
 	protected $news;
 
-	protected $testExtensionsToLoad = array('typo3conf/ext/news');
-	protected $coreExtensionsToLoad = array('extbase', 'fluid');
+	protected $testExtensionsToLoad = ['typo3conf/ext/news'];
+	protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
 	public function setUp() {
 		parent::setUp();
-		$this->mockedViewHelper = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\SimplePrevNextViewHelper', array('dummy'), array(), '', TRUE, TRUE, FALSE);
+		$this->mockedViewHelper = $this->getAccessibleMock('GeorgRinger\\News\\ViewHelpers\\SimplePrevNextViewHelper', ['dummy'], [], '', TRUE, TRUE, FALSE);
 
 		$this->news = new News();
 		$this->news->setPid(9);
@@ -54,23 +50,22 @@ class SimplePrevNextViewHelperTest extends \TYPO3\CMS\Core\Tests\FunctionalTestC
 
 		$fo = $this->mockedViewHelper->_call('getNeighbours', $this->news, '', 'datetime');
 
-		$exp = array(
-			0 => array(
+		$exp = [
+			0 => [
 				'uid' => 102,
 				'title' => NULL
-			),
-			1 => array(
+			],
+			1 => [
 				'uid' => 103,
 				'title' => NULL
-			),
-			2 => array(
+			],
+			2 => [
 				'uid' => 104,
 				'title' => NULL
-			)
-		);
+			]
+		];
 		$this->assertEquals($exp, $fo);
 	}
-
 
 	/**
 	 * @test
@@ -81,12 +76,12 @@ class SimplePrevNextViewHelperTest extends \TYPO3\CMS\Core\Tests\FunctionalTestC
 
 		$fo = $this->mockedViewHelper->_call('getNeighbours', $this->news, '', 'datetime');
 
-		$exp = array(
-			0 => array(
+		$exp = [
+			0 => [
 				'uid' => 102,
 				'title' => NULL
-			),
-		);
+			],
+		];
 		$this->assertEquals($exp, $fo);
 	}
 
@@ -99,16 +94,16 @@ class SimplePrevNextViewHelperTest extends \TYPO3\CMS\Core\Tests\FunctionalTestC
 
 		$fo = $this->mockedViewHelper->_call('getNeighbours', $this->news, '', 'datetime');
 
-		$exp = array(
-			0 => array(
+		$exp = [
+			0 => [
 				'uid' => 105,
 				'title' => NULL
-			),
-			1 => array(
+			],
+			1 => [
 				'uid' => 106,
 				'title' => NULL
-			),
-		);
+			],
+		];
 		$this->assertEquals($exp, $fo);
 	}
 

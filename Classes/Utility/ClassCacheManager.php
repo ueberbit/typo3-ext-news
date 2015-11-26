@@ -13,7 +13,6 @@ namespace GeorgRinger\News\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -76,14 +75,13 @@ class ClassCacheManager
 
     }
 
-
     /**
      * Parse a single file and does some magic
      * - Remove the <?php tags
      * - Remove the class definition (if set)
      *
      * @param string $filePath path of the file
-     * @param boolean $baseClass If class definition should be removed
+     * @param bool $baseClass If class definition should be removed
      * @return string path of the saved file
      * @throws \Exception
      * @throws \InvalidArgumentException
@@ -105,7 +103,7 @@ class ClassCacheManager
             $classParser = GeneralUtility::makeInstance(ClassParser::class);
             $classParser->parse($filePath);
             $classParserInformation = $classParser->getFirstClass();
-            $codeInLines = explode(LF, $code);
+            $codeInLines = explode(LF, str_replace(CR, '', $code));
 
             if (isset($classParserInformation['eol'])) {
                 $innerPart = array_slice($codeInLines, $classParserInformation['start'],
@@ -114,7 +112,7 @@ class ClassCacheManager
                 $innerPart = array_slice($codeInLines, $classParserInformation['start']);
             }
 
-            if (trim($innerPart[0] === '{')) {
+            if (trim($innerPart[0]) === '{') {
                 unset($innerPart[0]);
             }
             $codePart = implode(LF, $innerPart);
@@ -123,7 +121,6 @@ class ClassCacheManager
             return $content;
         }
     }
-
 
     /**
      * @param string $filePath

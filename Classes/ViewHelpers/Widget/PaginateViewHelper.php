@@ -27,8 +27,6 @@ namespace GeorgRinger\News\ViewHelpers\Widget;
  * </f:widget.paginate>
  * </code>
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {
@@ -62,8 +60,8 @@ class PaginateViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetView
     public function render(
         \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $objects,
         $as,
-        $configuration = array('itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true),
-        $initial = array()
+        $configuration = ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true],
+        $initial = []
     ) {
         return $this->initiateSubRequest();
     }

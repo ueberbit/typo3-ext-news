@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Tests for DisqusSizeViewHelper
  *
- * @package TYPO3
- * @subpackage tx_news
  */
 class DisqusViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -42,7 +40,7 @@ class DisqusViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$settingsService = $this->getAccessibleMock('GeorgRinger\\News\\Service\\SettingsService');
 		$settingsService->expects($this->any())
 			->method('getSettings')
-			->will($this->returnValue(array('disqusLocale' => $language)));
+			->will($this->returnValue(['disqusLocale' => $language]));
 
 		$viewHelper->injectSettingsService($settingsService);
 		$actualResult = $viewHelper->render($newsItem, 'abcdef', 'http://typo3.org/dummy/fobar.html');
